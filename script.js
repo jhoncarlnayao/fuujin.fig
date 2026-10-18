@@ -7,7 +7,7 @@ const CONFIG = {
     name: "Fuujin",
     brand: "Fuujin",
     role: "Student dev & Figma designer",
-    title: "fuujin — portfolio",
+    title: "fuujin.fig",
     description: "4th-year BSIT student building software, designing interfaces, and bringing ideas to life for real people. Freelance dev + Figma work, open for capstone collabs.",
     location: "Davao, PH",
     email: "jhoncarlnayaoxx@gmail.com",
