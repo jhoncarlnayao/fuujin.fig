@@ -4,15 +4,15 @@
    ========================================================================== */
 const CONFIG = {
   site: {
-    name: "Your Name",
-    brand: "Your Name",
-    role: "Product & UI designer",
-    title: "Your Name — Figma Portfolio",
-    description: "UI and product design portfolio with interactive Figma files you can click through.",
-    location: "City, Country",
+    name: "Fuujin",
+    brand: "Fuujin",
+    role: "Student dev & Figma designer",
+    title: "fuujin — portfolio",
+    description: "4th-year BSIT student building software, designing interfaces, and bringing ideas to life for real people. Freelance dev + Figma work, open for capstone collabs.",
+    location: "Davao, PH",
     email: "jhoncarlnayaoxx@gmail.com",
     statusLabel: "Frame 1284",          // small label above the status box, like a Figma layer name
-    status: "Open for work (and strong opinions on kerning)"
+    status: "Open for freelance & capstone collabs"
   },
   theme: {
     palette: "figma",                // "figma" | "figma-red" | "ember" | "moss" | "rose" | "sand" | "default" (the original blue)
@@ -65,10 +65,10 @@ const CONFIG = {
     ]
   },
   about: {
-    callout: { tag: "Frame 1285", text: "Open for work (and strong opinions on kerning)" }, // Figma-style selected box after the paragraphs; delete to hide
+    callout: { tag: "Frame 1285", text: "Open for freelance & capstone collabs" }, // Figma-style selected box after the paragraphs; delete to hide
     paragraphs: [
-      "Replace this with who you are and what you design. Keep it human: what you care about, what you are good at, and the kind of work you want next.",
-      "Fun fact slot: tell people your design hill to die on. Mine could be that “final_v7_REAL” is not a version control system."
+      "Fourth-year BSIT student in Davao. Most of what I know about design I learned by fixing something that looked fine until I looked closer, and I have strong opinions about things that don\u2019t matter to anyone but me.",
+      "I build web apps, explore project ideas, and call it research when it\u2019s really just curiosity. I also post Figma tutorials on TikTok and Instagram."
     ],
     stats: [ // optional
       { value: "1,284", label: "Layers named “Frame 1284”" },
@@ -173,17 +173,21 @@ const CONFIG = {
 
       // ---- Web ----
       { title: "Skilled-Match", category: "Web app", summary: "Clients post jobs on the web. Workers swipe through them on mobile.", description: "A job-matching platform where clients post work through a web app and skilled workers find jobs through a mobile app with a Tinder-style swipe interface.", tags: ["Laravel", "Blade", "Mobile", "Swipe UI"], repo: "https://github.com/jhoncarlnayao/Skilled-Match" },
-      { title: "PurrfectPlanner", category: "Web app", summary: "To-dos as tickets, with sticky notes.", description: "A playful productivity tool that turns your to-dos into tickets, complete with subjects, time slots, colors and sticky notes. Built as a PWA with a feline flair.", tags: ["PWA", "HTML", "JavaScript"], repo: "https://github.com/jhoncarlnayao/PurrfectPlanner-" },
+      { title: "PurrfectPlanner", category: "Web app", summary: "To-dos as tickets, with sticky notes.", description: "A playful productivity tool that turns your to-dos into tickets, complete with subjects, time slots, colors and sticky notes. Built as a PWA with a feline flair.", tags: ["PWA", "HTML", "JavaScript"], link: "https://purrfect-planner.vercel.app/", repo: "https://github.com/jhoncarlnayao/PurrfectPlanner-" },
       { title: "Readme-Generator", category: "Web app", summary: "A README generator with live preview.", description: "A simple and efficient README generator with a live preview, built for developers who want quick, clean project documentation.", tags: ["HTML", "Live preview"], repo: "https://github.com/jhoncarlnayao/Readme-Generator" },
       { title: "r-sum-.exe", category: "Web app", summary: "No sign-up, no setup. A resume builder that runs.", description: "A resume builder with no sign-up and no setup. Open it and start typing.", tags: ["HTML", "Resume"], repo: "https://github.com/jhoncarlnayao/r-sum-.exe" },
-      { title: "DevCard", category: "Web app", summary: "GitHub and LeetCode stats as a profile card.", description: "A web app that generates a shareable profile card from your GitHub and LeetCode profiles.", tags: ["GitHub", "LeetCode", "Web app"] },
+      { title: "DevCard", category: "Web app", summary: "GitHub and LeetCode stats as a profile card.", description: "A web app that generates a shareable profile card from your GitHub and LeetCode profiles.", tags: ["GitHub", "LeetCode", "Web app"], link: "https://devcard-fuujin.vercel.app/" },
       { title: "flip.", category: "Web app", summary: "A split-flap clock that also keeps you focused.", description: "A web app with a split-flap clock, a Pomodoro timer and a typing test.", tags: ["Clock", "Pomodoro", "Typing test"] },
       { title: "BANTAY", category: "Web app", summary: "Attendance tracking, built with Laravel.", description: "An attendance system built with Laravel.", tags: ["Laravel", "PHP"] },
       { title: "Gym Membership System", category: "Web app", summary: "Admin and member dashboards for a gym.", description: "A gym membership management system with separate admin and member dashboards, built with Laravel 12, MySQL and Tailwind with Flowbite.", tags: ["Laravel 12", "MySQL", "Tailwind", "Flowbite"] },
+      { title: "Letterbox", category: "Web app", summary: "A Valentine\u2019s card generator with an envelope animation.", description: "Envelope animation, photo upload, html2canvas download and URL sharing. No backend: the whole letter lives in the link.", tags: ["JavaScript", "html2canvas", "URL sharing"], link: "https://letterbox-fuujin.vercel.app/" },
+      { title: "Dapit Himlay", category: "Web app", summary: "Find a loved one\u2019s resting place, online.", description: "A Capstone project for Davao Memorial Park, built with Laravel. Find a loved one\u2019s resting place on the grounds, and inquire or buy memorial lots online or by phone.", tags: ["Capstone", "Laravel"] },
       { title: "YTSave", category: "Web app", summary: "A YouTube downloader.", description: "A YouTube downloader built with Node.js, Express, yt-dlp and ffmpeg.", tags: ["Node.js", "Express", "yt-dlp", "ffmpeg"] },
 
       // ---- Software & scripts ----
       { title: "AutoHarvest-Minescript", category: "Software & scripts", summary: "Wheat that harvests itself.", description: "A Minescript Python script that detects, harvests and replants wheat in Minecraft, simulating real player clicks.", tags: ["Python", "Minescript", "Minecraft"], repo: "https://github.com/jhoncarlnayao/AutoHarvest-Minescript" },
+      { title: "Moderation & Utility Bot", category: "Software & scripts", summary: "A Discord bot with a unified mod log.", description: "A Discord.js bot with moderation commands, Roblox community integration and a unified mod-log history.", tags: ["Discord.js", "Roblox", "Moderation"] },
+      { title: "Floating Widget Dashboard", category: "Software & scripts", summary: "A shadcn-inspired desktop dashboard.", description: "An Electron dashboard with a shadcn-inspired design system, a Ctrl+K command panel, light and dark mode, and a data table.", tags: ["Electron", "Design system", "Dark mode"] },
       { title: "Inventory-Management-System", category: "Software & scripts", summary: "Products, stock levels and full CRUD, in C#.", description: "A C# inventory management system with CRUD functionality for managing products and tracking stock levels.", tags: ["C#", "CRUD"], repo: "https://github.com/jhoncarlnayao/Inventory-Management-System" }
     ]
   },
@@ -205,7 +209,16 @@ const CONFIG = {
     ] },
     { group: "Backend", items: [
       { name: "Laravel", level: 3, note: "For larger systems." },
-      { name: "Python",  level: 3, note: "Terminal projects." }
+      { name: "Python",  level: 3, note: "Terminal projects." },
+      { name: "Node.js" },
+      { name: "Java" },
+      { name: "C#" }
+    ] },
+    { group: "Tooling", items: [
+      { name: "Git" },
+      { name: "WebAudio API" },
+      { name: "PWABuilder" },
+      { name: "Vite" }
     ] },
     { group: "Soft skills", items: [
       { name: "Listening to feedback" },
@@ -213,15 +226,24 @@ const CONFIG = {
       { name: "Coffee" }
     ] }
   ],
-  services: [
-    { title: "Interface design",  text: "Screens that look good and make sense. In that order? No, both at once." },
-    { title: "Design systems",    text: "Components, tokens and docs, so the 14 shades of blue become one." },
-    { title: "Clickable prototypes", text: "Test ideas in Figma before anyone writes a line of code (or a line of regret)." }
+  services: [ // includes (chips) and note are optional
+    { title: "Development", text: "Single-file web apps, PWAs, dashboards and tools with clean, iterated UI. Tailwind, JS, Laravel or Node.js.",
+      includes: ["Full frontend build (HTML/CSS/JS, React, Tailwind)", "Backend when needed (Node.js, Laravel, Python)", "Iterative feedback rounds", "Clean, documented, single-file or modular delivery", "PWA/APK packaging on request"],
+      note: "Rates discussed per project." },
+    { title: "Design", text: "Figma UI systems, poster work and design tutorials. Clean, monochrome, and practical over trendy gradients.",
+      includes: ["UI systems and component libraries", "Figma animation and prototyping", "Poster and social content design"],
+      note: "Booked per file, turnaround discussed upfront." },
+    { title: "Figma file work", text: "A Figma file that needs cleaning up? Components, prototypes and tokens, handed over so developers don\u2019t sigh at it.",
+      includes: ["Component libraries with variants & auto-layout", "Clickable prototypes for handoff or user testing", "Design tokens matched to your dev stack", "Optional walkthrough or tutorial recording"] },
+    { title: "Capstone help", text: "Open for capstone collabs. Fresh out of Capstone 2, so the pain is still very much remembered." }
   ],
   experienceLayout: "history", // "history" = Figma version history panel | "timeline" = simple vertical timeline
   experience: [ // students: use education, internships, awards
-    { period: "2023 – Present", role: "Role or degree", org: "Company or school", text: "What you did, plus one honest detail, like surviving a rebrand." },
-    { period: "2021 – 2023",    role: "Role or degree", org: "Company or school", text: "What you did or learned. Extra credit for a stakeholder anecdote." }
+    { period: "Present", role: "BS Information Technology, 4th year", org: "College of Information Technology, Davao", text: "Building web apps, exploring project ideas, and calling it research when it\u2019s really just curiosity." },
+    { period: "2026",    role: "Capstone 2, completed",               org: "College of Information Technology",       text: "Dapit Himlay, a Laravel system for Davao Memorial Park: find a loved one\u2019s resting place, then inquire or buy memorial lots online or by phone. Done with Capstone 2, hell yeah." },
+    { period: "2026",    role: "Learn PHP certificate",               org: "Udemy",                                   text: "The Laravel side of the stack, now with paperwork." },
+    { period: "2024",    role: "Database and HTML & CSS certifications", org: "Certiport",                            text: "Two credentials in one year: databases, and HTML & CSS." },
+    { period: "2023",    role: "Java certification",                  org: "Certiport",                               text: "Where the Java part of the stack comes from." }
   ],
   socials: [ // entries without a url are hidden
     { label: "TikTok",    url: "https://www.tiktok.com/@_pojennn" },
@@ -740,7 +762,11 @@ function services() {
         ${CONFIG.services.map(x => `
         <li class="group grid items-center gap-3 border-b border-line px-5 py-8 transition last:border-b-0 hover:bg-accent hover:text-onaccent md:grid-cols-12 md:gap-8 md:py-10" ${reveal}>
           <h3 class="flex items-center gap-4 text-3xl font-medium tracking-tight md:col-span-5 md:text-5xl"><svg class="h-6 w-6 shrink-0 opacity-60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 8h16M4 16h16M8 4v16M16 4v16"/></svg>${esc(x.title)}</h3>
-          <p class="text-lg text-mute transition group-hover:text-onaccent md:col-span-6 md:col-start-7">${esc(x.text)}</p>
+          <div class="md:col-span-6 md:col-start-7">
+            <p class="text-lg text-mute transition group-hover:text-onaccent">${esc(x.text)}</p>
+            ${x.includes?.length ? `<ul class="mt-5 flex flex-wrap gap-2 text-sm">${x.includes.map(i => `<li class="rounded-md border border-line px-3 py-1 text-mute transition group-hover:border-current group-hover:text-onaccent">${esc(i)}</li>`).join("")}</ul>` : ""}
+            ${x.note ? `<p class="mt-4 text-sm text-mute transition group-hover:text-onaccent">${esc(x.note)}</p>` : ""}
+          </div>
         </li>`).join("")}
       </ul>
     </div>
