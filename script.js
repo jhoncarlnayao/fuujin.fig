@@ -10,7 +10,7 @@ const CONFIG = {
     title: "Your Name — Figma Portfolio",
     description: "UI and product design portfolio with interactive Figma files you can click through.",
     location: "City, Country",
-    email: "hello@example.com",
+    email: "jhoncarlnayaoxx@gmail.com",
     statusLabel: "Frame 1284",          // small label above the status box, like a Figma layer name
     status: "Open for work (and strong opinions on kerning)"
   },
@@ -19,25 +19,53 @@ const CONFIG = {
     accent: "",                      // optional: any hex color, overrides the palette's accent
     defaultMode: "system"            // "light" | "dark" | "system"
   },
-  // Order = order on the page.
+  // Order = order on the page. Tip: [[Tag|word]] in a title draws a Figma "selected layer" box around that word.
   sections: [
-    { id: "about",      enabled: true, label: "About",      title: "Hi, I move things 2px" },
-    { id: "work",       enabled: true, label: "Work",       title: "Figma files, open for poking" },
-    { id: "skills",     enabled: true, label: "Skills",     title: "Tools of the trade" },
-    { id: "services",   enabled: true, label: "Services",   title: "Ways to hire me" },
-    { id: "experience", enabled: true, label: "Experience", title: "The résumé, but fun" }
+    { id: "about",      enabled: true, label: "About",      title: "Hi, I move things [[Text / 2px|`2px`]]" },
+    { id: "work",       enabled: true, label: "Work",       title: "Figma files, open for {{serif:poking}}" },
+    { id: "skills",     enabled: true, label: "Skills",     title: "Tools of the [[Pixelify Sans · 700|{{pixel:trade}}]]" },
+    { id: "services",   enabled: true, label: "Services",   title: "Ways to {{hand:hire}} me" },
+    { id: "experience", enabled: true, label: "Experience", title: "The résumé, but {{wide:fun}}" }
   ],
   hero: {
-    headline: ["I'm Fuujin.", "Frames named.", "Allegedly."],
+    // Mixed fonts (hero headline + section titles): *word* = serif italic, `word` = mono, {{font:word}} = another font. Fonts: serif, hand, pixel, wide, mono.
+    headline: ["I'm *Fuujin*.", "Frames *named*.", "`Allegedly`."],
     subtext: "Fuujin here. I design interfaces in Figma, name the layers (eventually) and hand developers files they don't have to sigh at. Every project below opens as a real Figma file, so yes, you may poke it.",
     primaryCta:   { label: "Open the Figma files", href: "#work" },
-    secondaryCta: { label: "Say hello", href: "mailto:hello@example.com" }, // use your own email
+    secondaryCta: { label: "Say hello", href: "mailto:jhoncarlnayaoxx@gmail.com" },
     cursors: [ // animated "multiplayer cursors": x/y = start position (% of hero), notes cycle, optional path: [[dx,dy] x3] in px. Delete to hide.
       { name: "Client", notes: ["make the logo bigger", "can it pop more?", "love it, one tiny change", "can Fuujin do it by tonight?"], color: "#d6336c", x: "58%", y: "22%" },
       { name: "Dev",    notes: ["that's not in the spec", "works on my machine", "who named this layer?", "Fuujin named it. Mostly."],  color: "#0b7285", x: "9%",  y: "62%" }
     ]
   },
+  // Figma-style comment pins dropped on the page. One short thread per spot, with a joke inside.
+  // at = CSS selector of the element to pin to | pin = corner ("tr", "br", "tl" or "bl"). Then author, time, color, text and an optional reply.
+  // Set enabled: false (or delete the items) to hide them all.
+  comments: {
+    enabled: true,
+    items: [
+      { at: ".footer-panel .sel", pin: "tr", author: "Dev", time: "2m", color: "#0b7285",
+        text: "Padding is 17px. Nobody has ever wanted 17px.",
+        reply: { author: "Me", time: "1m", text: "The spec said vibes." } },
+      { at: "#about aside", pin: "tr", author: "Dev", time: "4h", color: "#0b7285",
+        text: "Pixels nudged by one: \u221e. I have seen the commits.",
+        reply: { author: "Me", time: "3h", text: "Every single one was necessary." } },
+      { at: "#work [data-reveal]", pin: "tr", author: "Client", time: "1d", color: "#d6336c",
+        text: "Love these! Can we see them in green?",
+        reply: { author: "Me", time: "1d", text: "Open one in Figma and go wild. I'll wait." } },
+      { at: "#skills [data-reveal]", pin: "tr", author: "Dev", time: "6h", color: "#0b7285",
+        text: "Is Auto Layout a skill or a lifestyle?",
+        reply: { author: "Me", time: "5h", text: "Yes." } },
+      { at: "#services ul", pin: "tr", author: "Client", time: "2d", color: "#d6336c",
+        text: "How much is \u201cone tiny change\u201d?",
+        reply: { author: "Me", time: "2d", text: "More than the big ones." } },
+      { at: "#experience ol", pin: "tr", author: "QA", time: "3d", color: "#7048e8",
+        text: "Found zero typos in this section. Suspicious.",
+        reply: { author: "Me", time: "3d", text: "I named the layers, too." } }
+    ]
+  },
   about: {
+    callout: { tag: "Frame 1285", text: "Open for work (and strong opinions on kerning)" }, // Figma-style selected box after the paragraphs; delete to hide
     paragraphs: [
       "Replace this with who you are and what you design. Keep it human: what you care about, what you are good at, and the kind of work you want next.",
       "Fun fact slot: tell people your design hill to die on. Mine could be that “final_v7_REAL” is not a version control system."
@@ -51,9 +79,50 @@ const CONFIG = {
   projects: {
     allLabel: "All",
     canvasCols: 6,   // frames per row on the canvas (each category gets its own labelled section)
-    // Extra layers dropped around the canvas (draggable, purely for fun). type: sticky | comment | text | frame | phone | nav | buttons | tokens | swatches | arrow.
+    // Extra layers dropped around the canvas (draggable, purely for fun). type:
+    //   design (Canva-style: kind = ig | story | slide | thumb | logo | flyer | card | invite, v = colour 0-4)
+    //   note (title + lines) | thread (author, text, time, replies, resolved) | status (state: ready | done | wip) | code (name, text) | measure (w, text)
+    //   sticky | comment | text | frame | phone | nav | buttons | tokens | swatches | arrow.
     // Leave out x/y and they get a random spot (in the gaps when they fit). Add `color` / `rot` (degrees) on stickies if you want. Delete the list to hide them all.
     extras: [
+      // ---- Canva-style designs ----
+      { type: "design", kind: "ig",     v: 0 },
+      { type: "design", kind: "story",  v: 4 },
+      { type: "design", kind: "slide",  v: 0 },
+      { type: "design", kind: "thumb",  v: 2 },
+      { type: "design", kind: "logo",   v: 0 },
+      { type: "design", kind: "flyer",  v: 4 },
+      { type: "design", kind: "ig",     v: 1 },
+      { type: "design", kind: "card",   v: 1 },
+      { type: "design", kind: "story",  v: 2 },
+      { type: "design", kind: "invite", v: 3 },
+      { type: "design", kind: "slide",  v: 1 },
+      { type: "design", kind: "thumb",  v: 3 },
+      { type: "design", kind: "ig",     v: 3 },
+      { type: "design", kind: "flyer",  v: 0 },
+      // ---- Notes ----
+      { type: "note", title: "Design notes",   color: "#a5d8ff", lines: ["12-col grid, 24px gutter", "Radius: 6 / 12 / 999", "Accent only for CTAs", "Dark mode = tokens, not new colors"] },
+      { type: "note", title: "Handoff checklist", color: "#b2f2bb", lines: ["Export @1x and @2x", "States: hover, focus, disabled", "Alt text on every image", "Check 375px before shipping"] },
+      { type: "note", title: "Feedback round 2", color: "#ffd6e7", lines: ["Make the headline bigger", "Less purple", "More purple (other client)", "Keep the whitespace!"] },
+      // ---- Comment threads ----
+      { type: "thread", author: "Maya",   time: "2h", text: "Can we use 16px padding here to match the card?", color: "#d6336c", replies: [{ author: "Me", text: "Done, updated in the next push." }] },
+      { type: "thread", author: "Dev",    time: "1d", text: "Is this component ready for dev? I need the focus state.", color: "#0b7285", resolved: true, replies: [{ author: "Me", text: "Added it. Marked as ready for dev." }] },
+      { type: "thread", author: "Client", time: "3d", text: "Love the poster! Any chance of a green version?", color: "#f08c00", replies: [] },
+      { type: "thread", author: "QA",     time: "5h", text: "The button label wraps on 320px screens.", color: "#7048e8", replies: [{ author: "Dev", text: "Fixing it in the next commit." }] },
+      // ---- Dev mode: status, specs, measurements ----
+      { type: "status", state: "ready", name: "Navbar / v3",     text: "Handoff notes attached. 3 changes since last view." },
+      { type: "status", state: "ready", name: "Checkout flow",   text: "Specs, assets and tokens are ready." },
+      { type: "status", state: "wip",   name: "Dark mode pass",  text: "Still tweaking contrast on cards." },
+      { type: "status", state: "done",  name: "Poster series",   text: "Exported at 1080 × 1350." },
+      { type: "code", name: "Inspect · .btn-primary", text: ".btn-primary {\n  padding: 8px 16px;\n  border-radius: 6px;\n  background: var(--accent);\n  color: var(--on-accent);\n}" },
+      { type: "code", name: "Inspect · .card", text: ".card {\n  display: flex;\n  flex-direction: column;\n  gap: 12px;\n  border: 1px solid var(--line);\n}" },
+      { type: "code", name: "Inspect · .hero-title", text: ".hero-title {\n  font-size: 96px;\n  line-height: 0.88;\n  letter-spacing: -0.05em;\n}" },
+      { type: "measure", w: 80,  text: "80" },
+      { type: "measure", w: 24,  text: "24" },
+      { type: "measure", w: 160, text: "160" },
+      { type: "measure", w: 16,  text: "16" },
+      { type: "measure", w: 56,  text: "gap 24" },
+      // ---- Stickies, comments, text ----
       { type: "sticky",  text: "Dev: that's not in the spec" },
       { type: "sticky",  text: "TODO: delete this frame (do not delete this frame)" },
       { type: "sticky",  text: "Client: can we see it in green?" },
@@ -155,9 +224,11 @@ const CONFIG = {
     { period: "2021 – 2023",    role: "Role or degree", org: "Company or school", text: "What you did or learned. Extra credit for a stakeholder anecdote." }
   ],
   socials: [ // entries without a url are hidden
-    { label: "Figma",     url: "https://www.figma.com" },
-    { label: "LinkedIn",  url: "https://www.linkedin.com" },
-    { label: "Instagram", url: "https://www.instagram.com" }
+    { label: "TikTok",    url: "https://www.tiktok.com/@_pojennn" },
+    { label: "Gmail",     url: "mailto:jhoncarlnayaoxx@gmail.com" },
+    { label: "Instagram", url: "https://www.instagram.com/_pojennn/" },
+    { label: "GitHub",    url: "https://github.com/jhoncarlnayao/" },
+    { label: "Discord",   url: "https://discord.com/users/871760434842206208" }
   ],
   footer: {
     tagline: "Designing in Figma and apologizing to developers for the spacing.",
@@ -166,18 +237,26 @@ const CONFIG = {
       label: "Let's work together",
       text: "Pick whichever you check most. I reply faster than a design review thread.",
       channels: [ // use your own details; entries without a url are hidden
-        { label: "Google",    detail: "hello@example.com", url: "mailto:hello@example.com" },
-        { label: "TikTok",    detail: "@yourhandle",       url: "https://www.tiktok.com" },
-        { label: "Instagram", detail: "@yourhandle",       url: "https://www.instagram.com" },
-        { label: "GitHub",    detail: "yourhandle",        url: "https://github.com" }
+        { label: "TikTok",    detail: "@_pojennn",          url: "https://www.tiktok.com/@_pojennn" },
+        { label: "Gmail",     detail: "jhoncarlnayaoxx@gmail.com",  url: "mailto:jhoncarlnayaoxx@gmail.com" },
+        { label: "Instagram", detail: "@_pojennn",          url: "https://www.instagram.com/_pojennn/" },
+        { label: "GitHub",    detail: "jhoncarlnayao",      url: "https://github.com/jhoncarlnayao/" },
+        { label: "Discord",   detail: "ID 871760434842206208", url: "https://discord.com/users/871760434842206208" }
       ]
     },
     sign: "All rights reserved. Layers not included.",
-    // `source`: "sections" | "services" | "projects" fills a column automatically, or give `links: [{ label, href }]`.
+    // `source`: "sections" | "services" | "projects" fills a column automatically ("projects" lists every project), or give `links: [{ label, href }]`.
     columns: [
       { title: "Pages",    source: "sections" },
       { title: "Services", source: "services" },
-      { title: "Projects", source: "projects" }
+      { title: "Projects", links: [ // main projects = the repos pinned on github.com/jhoncarlnayao
+        { label: "Skilled-Match",               href: "https://github.com/jhoncarlnayao/Skilled-Match" },
+        { label: "PurrfectPlanner",             href: "https://github.com/jhoncarlnayao/PurrfectPlanner-" },
+        { label: "Readme-Generator",            href: "https://github.com/jhoncarlnayao/Readme-Generator" },
+        { label: "r-sum-.exe",                  href: "https://github.com/jhoncarlnayao/r-sum-.exe" },
+        { label: "Inventory-Management-System", href: "https://github.com/jhoncarlnayao/Inventory-Management-System" },
+        { label: "AutoHarvest-Minescript",      href: "https://github.com/jhoncarlnayao/AutoHarvest-Minescript" }
+      ] }
     ],
     legal: [] // e.g. [{ label: "Privacy Policy", href: "privacy.html" }]
   }
@@ -191,6 +270,25 @@ const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const store = { get: k => { try { return localStorage.getItem(k); } catch { return null; } }, set: (k, v) => { try { localStorage.setItem(k, v); } catch {} } };
+/* copy that works everywhere: async Clipboard API first, then a hidden-textarea fallback
+   (the API throws on http://, file://, iframes, or when permission is denied) */
+const copyText = async text => {
+  try {
+    if (navigator.clipboard && window.isSecureContext) { await navigator.clipboard.writeText(text); return true; }
+  } catch (_) { /* fall through to the fallback */ }
+  const ta = document.createElement("textarea");
+  ta.value = text;
+  ta.setAttribute("readonly", "");
+  ta.style.cssText = "position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;pointer-events:none";
+  document.body.appendChild(ta);
+  const prev = document.activeElement;
+  ta.focus(); ta.select(); ta.setSelectionRange(0, text.length);
+  let ok = false;
+  try { ok = document.execCommand("copy"); } catch (_) { ok = false; }
+  ta.remove();
+  if (prev && prev.focus) prev.focus();
+  return ok;
+};
 const safeUrl = u => /^(https?:|mailto:|#)/i.test(u || "") ? u : "";
 const figmaUrl = u => /^https:\/\/([\w-]+\.)?figma\.com\//i.test(u || "") ? u : "";
 const enabled = CONFIG.sections.filter(s => s.enabled);
@@ -253,7 +351,7 @@ function applyAccent(P) {
 function setMode(dark, persist) {
   document.documentElement.classList.toggle("dark", dark);
   const t = $("#theme-toggle");
-  t.setAttribute("aria-label", dark ? "Switch to light theme" : "Switch to dark theme");
+  if (t) { t.setAttribute("aria-label", dark ? "Switch to light theme" : "Switch to dark theme"); t.dataset.tip = dark ? "Light mode: switch to the light theme" : "Dark mode: switch to the dark theme"; }
   $('meta[name="theme-color"]').content = dark ? themeBg.dark : themeBg.light;
   if (persist) store.set("theme", dark ? "dark" : "light");
 }
@@ -268,17 +366,28 @@ function initTheme() {
 /* ==========================================================================
    Section builders
    ========================================================================== */
+// Dev-mode statuses (Figma-style). Set `status: "ready" | "done" | "wip"` on a project; default = posters are "done", everything else "ready".
+const STATUS = { ready: ["Ready for dev", "#14ae5c"], done: ["Completed", "#7b61ff"], wip: ["In progress", "#f5a623"] };
+const stOf = p => STATUS[p.status] ? p.status : (p.category === "Poster" ? "done" : "ready");
+const CHECK = '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>';
+
+
+// Figma-style "selected layer": outlined box, purple-ish name tag above it, four corner handles.
+const SEL_H = '<i class="sel-h" style="left:-4px;top:-4px"></i><i class="sel-h" style="right:-4px;top:-4px"></i><i class="sel-h" style="left:-4px;bottom:-4px"></i><i class="sel-h" style="right:-4px;bottom:-4px"></i>';
+// *word* -> serif italic, `word` -> mono, {{serif|hand|pixel|wide|mono:word}} -> that font, [[Tag|word]] -> Figma selection box. Everything else stays escaped.
+const rich = t => esc(t).replace(/\*([^*]+)\*/g, '<span class="ff-serif">$1</span>').replace(/`([^`]+)`/g, '<span class="ff-mono">$1</span>').replace(/\{\{(serif|hand|pixel|wide|mono):([^}]+)\}\}/g, '<span class="ff-$1">$2</span>').replace(/\[\[([^|\]]+)\|(.+?)\]\]/g, (m, tag, w) => `<span class="sel max-w-full !px-[.1em] !py-0"><span class="sel-tag">${tag}</span>${w}${SEL_H}</span>`);
+const selBox = (tag, html, cls = "") => `<span class="sel max-w-full ${cls}">${tag ? `<span class="sel-tag">${esc(tag)}</span>` : ""}${html}${SEL_H}</span>`;
 const heading = (id, extra = "") => `
   <div class="mb-12 md:mb-20 ${extra}">
     <p class="mb-3 text-sm text-mute"><span aria-hidden="true">#</span> ${esc(sec(id).label)}</p>
-    <h2 class="display text-5xl sm:text-7xl md:text-[8rem]">${esc(sec(id).title)}</h2>
+    <h2 class="display text-5xl sm:text-7xl md:text-[8rem]">${rich(sec(id).title)}</h2>
   </div>`;
 
 function hero() {
   const { site, hero: h } = CONFIG;
-  const lines = h.headline.map((l, i) => `<span class="hero-line"><span style="--i:${i}">${esc(l)}</span></span>`).join("");
+  const lines = h.headline.map((l, i) => `<span class="hero-line"><span style="--i:${i}">${rich(l)}</span></span>`).join("");
   return `
-  <section id="home" aria-label="Introduction" class="relative flex flex-col justify-end overflow-hidden pb-10 pt-48 md:min-h-screen md:pt-32">
+  <section id="home" aria-label="Introduction" class="relative flex flex-col justify-end overflow-hidden pb-10 pt-28 md:min-h-screen md:pt-32">
     ${(h.cursors || []).map((c, i) => {
       const notes = c.notes || [c.note || ""], k = i % 2 ? -1 : 1;
       const mob = c.m || [{ x: "6%", y: "5.25rem" }, { x: "18%", y: "8rem" }][i] || { x: "10%", y: "6rem" };
@@ -311,6 +420,7 @@ function about() {
       <div class="grid gap-12 md:grid-cols-12">
         <div class="space-y-6 text-xl leading-relaxed md:col-span-7 md:text-3xl md:leading-snug" ${reveal}>
           ${a.paragraphs.map((p, i) => `<p class="${i ? "text-mute text-lg md:text-xl" : ""}">${esc(p)}</p>`).join("")}
+          ${a.callout?.text ? `<p class="pt-8">${selBox(a.callout.tag, esc(a.callout.text), "!px-5 !py-3 text-base md:text-xl")}</p>` : ""}
         </div>
         ${a.stats?.length ? `<aside aria-label="Quick facts" class="border border-line md:col-span-4 md:col-start-9" ${reveal}>
           <div class="border-b border-line px-4 py-2 text-sm text-mute">${esc(a.statsTitle || "Properties")}</div>
@@ -346,7 +456,7 @@ function figmaPanels() {
     a5: '<path d="M4 12h16"/><rect x="7" y="5" width="4" height="14"/><rect x="13" y="8" width="4" height="8"/>',
     a6: '<path d="M4 20h16"/><rect x="7" y="4" width="4" height="12"/><rect x="13" y="9" width="4" height="7"/>'
   };
-  const kind = t => ["buttons", "tokens", "swatches"].includes(t) ? "comp" : t === "text" ? "text" : t === "sticky" || t === "comment" ? "note" : t === "arrow" ? "arrow" : "frame";
+  const kind = t => ["buttons", "tokens", "swatches", "status"].includes(t) ? "comp" : t === "text" ? "text" : ["sticky", "comment", "note", "thread"].includes(t) ? "note" : t === "arrow" ? "arrow" : "frame";
   const rows = [
     ...CONFIG.projects.items.map((p, i) => ({ n: p.title, k: "frame", sel: i === 0 })),
     ...(CONFIG.projects.extras || []).map(x => ({ n: x.name || x.text || x.type, k: kind(x.type) }))
@@ -405,6 +515,53 @@ function figmaPanels() {
   return { left, right };
 }
 
+// Left sidebar + "Recommended" strip for the Grid view, styled like Figma's Recents page.
+function gridSidebar() {
+  const ic = d => `<svg class="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+  const nav = [
+    ["Recents", '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>', true],
+    ["Community", '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>'],
+    ["Drafts", '<path d="M6 3h8l4 4v14H6z"/>'],
+    ["All folders", '<rect x="4" y="4" width="6" height="6"/><rect x="14" y="4" width="6" height="6"/><rect x="4" y="14" width="6" height="6"/><rect x="14" y="14" width="6" height="6"/>'],
+    ["Resources", '<path d="M4 5h16v14H4zM4 9h16"/>'],
+    ["Trash", '<path d="M5 7h14M9 7V4h6v3M7 7l1 13h8l1-13"/>']
+  ];
+  const folder = '<path d="M3 6a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>';
+  const cats = [...new Set(CONFIG.projects.items.map(p => p.category).filter(Boolean))];
+  const row = (l, d, on) => `<div class="flex items-center gap-3 rounded-md px-3 py-2 ${on ? "bg-accent/20 font-medium" : "text-mute"}">${ic(d)}<span class="truncate">${esc(l)}</span></div>`;
+  return `
+  <aside aria-hidden="true" class="hidden w-56 shrink-0 select-none flex-col border-r border-line text-sm lg:flex">
+    <div class="flex items-center gap-2 px-4 py-3"><span class="grid h-6 w-6 place-items-center rounded-full bg-accent text-[11px] text-onaccent">${esc(CONFIG.site.brand.slice(0, 1))}</span><span class="truncate font-medium">${esc(CONFIG.site.name)}</span></div>
+    <div class="mx-3 mb-3 flex items-center gap-2 rounded-md border border-line px-3 py-2 text-mute">${ic('<circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/>')}<span>Search</span></div>
+    <nav class="flex flex-col gap-0.5 px-2">${nav.map(n => row(...n)).join("")}</nav>
+    <p class="mt-5 flex items-center gap-1 px-4 pb-1 text-xs font-medium text-mute">${ic('<path d="M6 9l6 6 6-6"/>').replace("h-4 w-4", "h-3 w-3")}Starred</p>
+    <div class="flex flex-col gap-0.5 px-2 pb-4">${cats.map(c => row(c, folder)).join("")}</div>
+  </aside>`;
+}
+
+function gridRecommended() {
+  const items = CONFIG.projects.items;
+  const pick = items.slice(0, 5);
+  const card = (p, i) => {
+    const src = esc(safeUrl(p.image) || p.image || "");
+    const thumb = p.image
+      ? `<img src="${src}" alt="" loading="lazy" draggable="false" class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]">`
+      : `<div class="grid h-full w-full place-items-end p-3" style="background:linear-gradient(${135 + i * 35}deg,rgb(var(--accent-rgb)),color-mix(in srgb,rgb(var(--accent-rgb)) 60%,var(--fg)))"><span class="display text-4xl text-onaccent">${esc(p.title.slice(0, 1))}</span></div>`;
+    return `<li class="w-44 shrink-0 sm:w-auto">
+      <button type="button" data-project="${items.indexOf(p)}" class="group block w-full text-left" aria-haspopup="dialog">
+        <div class="aspect-[4/3] overflow-hidden rounded-md border border-line" style="background:color-mix(in srgb,var(--fg) 9%,var(--bg))">${thumb}</div>
+        <span class="mt-2 block truncate text-xs font-semibold">${esc(p.title)}</span>
+        <span class="block truncate text-xs text-mute">${esc(p.category)}${p.year ? " · " + esc(p.year) : ""}</span>
+      </button></li>`;
+  };
+  return `
+  <div class="mb-6 rounded-xl border border-line p-4 md:p-5" style="background:color-mix(in srgb,var(--fg) 4%,var(--bg))">
+    <h3 class="mb-4 text-sm font-medium">Recommended from the portfolio</h3>
+    <ul class="flex gap-4 overflow-x-auto pb-1 sm:grid sm:grid-cols-3 sm:overflow-visible lg:grid-cols-5">${pick.map(card).join("")}</ul>
+  </div>
+  <div class="mb-4 flex items-center gap-1 text-sm" aria-hidden="true"><span class="rounded-md bg-accent/20 px-3 py-1.5 font-medium">Recently viewed</span><span class="px-3 py-1.5 text-mute">Shared files</span><span class="px-3 py-1.5 text-mute">Shared folders</span></div>`;
+}
+
 function work() {
   const cats = [...new Set(CONFIG.projects.items.map(p => p.category).filter(Boolean))];
   const fig = figmaPanels();
@@ -412,20 +569,30 @@ function work() {
   <section id="work" class="ruler py-24 md:py-40">
     <div class="${wrap}">
       <div class="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">${heading("work", "!mb-0")}</div>
-      <div class="mb-8 mt-10 flex flex-wrap items-center justify-between gap-4">
+      <div class="mb-8 mt-10 flex flex-wrap items-center justify-between gap-4" ${reveal}>
         <div id="filters" role="group" aria-label="Filter projects by category" class="inline-flex flex-wrap gap-1 rounded-lg border border-line p-1">
           ${[CONFIG.projects.allLabel, ...cats].map((c, i) => `<button type="button" data-filter="${i ? esc(c) : "*"}" aria-pressed="${i === 0}" class="tool text-sm">${esc(c)}</button>`).join("")}
         </div>
-        <div id="view-toggle" role="group" aria-label="Layout" class="inline-flex gap-1 rounded-lg border border-line p-1">
+        <div id="view-toggle" role="group" aria-label="Layout" class="relative inline-flex gap-1 rounded-lg border !border-accent p-1"><span class="sel-tag" aria-hidden="true">Segmented control</span>
           <button type="button" data-view="canvas" aria-pressed="true" class="tool text-sm">Canvas</button>
-          <button type="button" data-view="grid" aria-pressed="false" class="tool text-sm">Grid</button>
+          <button type="button" data-view="grid" aria-pressed="false" class="tool text-sm">Grid</button>${SEL_H}
         </div>
       </div>
       <div id="canvas-wrap" class="flex">
         ${fig.left}
-        <div id="canvas" tabindex="0" role="group" aria-label="Design canvas. H for hand tool, V for move tool, Ctrl and scroll to zoom, arrow keys move a focused frame, Alt and arrow keys resize it, Enter opens it." class="relative h-[calc(100dvh-6rem)] max-h-[900px] min-h-[480px] min-w-0 flex-1 overflow-hidden border border-line" style="background:color-mix(in srgb,var(--fg) 4%,var(--bg));touch-action:none">
+        <div id="canvas" tabindex="0" role="group" aria-label="Design canvas. H for hand tool, V for move tool, Ctrl and scroll to zoom, arrow keys move a focused frame, Alt and arrow keys resize it, Enter opens it. D toggles dev mode." class="relative h-[calc(100dvh-6rem)] max-h-[900px] min-h-[480px] min-w-0 flex-1 overflow-hidden border border-line" style="background:color-mix(in srgb,var(--fg) 4%,var(--bg));touch-action:none">
           <div id="world" class="absolute left-0 top-0" style="transform-origin:0 0"></div>
-          <p class="pointer-events-none absolute bottom-3 left-3 z-10 max-w-[26rem] text-sm text-mute">Click a frame to select it, drag the handles to resize (Shift keeps ratio, Alt scales from center), double-click to open. H pans, V moves, F full view.</p>
+          <div id="cv-load" aria-hidden="true">
+            <svg class="cv-logo h-10 w-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${ICONS.figma}</svg>
+            <p class="text-sm">${esc(CONFIG.site.brand)} <span class="text-mute">/ Portfolio</span></p>
+            <div class="cv-prog"><i></i></div>
+            <p class="text-xs text-mute">Opening file…</p>
+          </div>
+          <p class="pointer-events-none absolute bottom-3 left-3 z-10 max-w-[26rem] text-sm text-mute">Click a frame to select it, drag the handles to resize (Shift keeps ratio, Alt scales from center), double-click to open. H pans, V moves, D dev mode, F full view.</p>
+          <aside id="dev-panel" class="is-off absolute right-4 top-20 z-20 w-64 max-w-[calc(100%-2rem)] overflow-hidden rounded-lg border border-line bg-bg text-sm shadow-lg" aria-label="Dev mode inspector">
+            <div class="flex items-center gap-2 border-b border-line px-3 py-2.5"><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 8l-4 4 4 4M16 8l4 4-4 4M14 5l-4 14"/></svg><span class="font-medium">Inspect</span><span class="ml-auto rounded px-1.5 py-0.5 text-[10px] text-white" style="background:#f24e9a">Dev mode</span></div>
+            <div id="dev-body" class="max-h-[55vh] overflow-auto px-3 py-3"></div>
+          </aside>
           <div class="cv-bar absolute left-1/2 top-4 z-20 flex max-w-[calc(100%-1.5rem)] -translate-x-1/2 flex-wrap items-center justify-center gap-1 rounded-lg border border-line bg-bg p-1 shadow-lg" role="toolbar" aria-label="Canvas tools">
             <button type="button" class="tool inline-flex items-center gap-2 text-sm" data-tool="move" aria-pressed="true" aria-label="Move tool (V)" title="Move (V)"><svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 3l16 8-7 2-3 7z"/></svg><span class="hidden sm:inline">Move</span></button>
             <button type="button" class="tool inline-flex items-center gap-2 text-sm" data-tool="hand" aria-pressed="false" aria-label="Hand tool (H)" title="Hand (H)"><svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 11V6a2 2 0 0 0-4 0v-1a2 2 0 0 0-4 0v1a2 2 0 0 0-4 0v8a8 8 0 0 0 16 0v-2a2 2 0 0 0-4 0"/></svg><span class="hidden sm:inline">Hand</span></button>
@@ -435,35 +602,44 @@ function work() {
             <button type="button" class="tool" data-zoom="1" aria-label="Zoom in" title="Zoom in (+)">+</button>
             <button type="button" class="tool text-sm" data-fit aria-label="Fit projects in view" title="Fit (0)">Fit</button>
             <span class="mx-1 h-5 w-px bg-line" aria-hidden="true"></span>
+            <button type="button" class="tool inline-flex items-center gap-2 text-sm" data-dev aria-pressed="false" aria-label="Dev mode (D)" title="Dev mode (D)"><svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 8l-4 4 4 4M16 8l4 4-4 4M14 5l-4 14"/></svg><span>Dev mode</span></button>
+            <span class="mx-1 h-5 w-px bg-line" aria-hidden="true"></span>
             <button type="button" class="tool inline-flex items-center gap-2 text-sm" data-full aria-pressed="false" aria-label="Full view (F)" title="Full view (F)"><svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg><span id="full-label">Full view</span></button>
           </div>
         </div>
         ${fig.right}
       </div>
-      <ul id="project-grid" class="grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3"></ul>
+      <div id="grid-wrap" class="is-off flex overflow-hidden rounded-xl border border-line" ${reveal}>
+        ${gridSidebar()}
+        <div class="min-w-0 flex-1 p-4 md:p-6">
+          ${gridRecommended()}
+          <ul id="project-grid" class="grid grid-cols-2 gap-4 md:grid-cols-2 md:gap-5 lg:grid-cols-3 xl:grid-cols-4"></ul>
+        </div>
+      </div>
       <p id="project-live" class="sr-only" aria-live="polite"></p>
     </div>
   </section>`;
 }
 
+// Grid view = Figma "Recents" file browser: dark-ish tile, thumbnail on top, file-type icon + name + meta underneath.
+const FILE_ICON = { Poster: "#0d99ff", "Web app": "#14ae5c", "Software & scripts": "#9747ff" };
 function projectCard(p, i) {
-  const visual = p.image
-    ? `<img src="${esc(safeUrl(p.image) || p.image)}" alt="" loading="lazy" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">`
-    : `<div class="grid h-full w-full place-items-end p-6 transition duration-500 group-hover:scale-105" style="background:linear-gradient(${135 + i * 35}deg,rgb(var(--accent-rgb)) 0%,color-mix(in srgb,rgb(var(--accent-rgb)) ${70 - i * 12}%,var(--fg)) 100%)"><span class="display text-7xl text-onaccent opacity-90 md:text-8xl">${esc(p.title.slice(0, 1))}</span></div>`;
+  const src = esc(safeUrl(p.image) || p.image || "");
+  const portrait = ratioOf(p) < 1;
+  const thumb = p.image
+    ? (portrait
+      ? `<img src="${src}" alt="" aria-hidden="true" loading="lazy" draggable="false" class="absolute inset-0 h-full w-full scale-125 object-cover opacity-40 blur-xl"><img src="${src}" alt="" loading="lazy" draggable="false" class="relative h-full w-full object-contain transition duration-500 group-hover:scale-[1.03]">`
+      : `<img src="${src}" alt="" loading="lazy" draggable="false" class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]">`)
+    : `<div class="grid h-full w-full place-items-end p-4" style="background:linear-gradient(${135 + i * 35}deg,rgb(var(--accent-rgb)) 0%,color-mix(in srgb,rgb(var(--accent-rgb)) ${70 - i * 12}%,var(--fg)) 100%)"><span class="display text-6xl text-onaccent opacity-90">${esc(p.title.slice(0, 1))}</span></div>`;
+  const st = STATUS[stOf(p)];
   return `
   <li class="project" data-category="${esc(p.category)}">
-    <button type="button" data-project="${i}" class="group block w-full text-left" aria-haspopup="dialog">
-      <p class="mb-2 text-sm text-mute"><span aria-hidden="true">#</span> ${esc(p.category)}</p>
-      <div class="frame">
-        <div class="relative overflow-hidden border border-line" style="${ratioCss(p)}">${visual}${figmaUrl(p.figma) ? '<span class="absolute left-3 top-3 rounded-md bg-fg px-3 py-1 text-xs font-medium text-bg">Live Figma file</span>' : ""}</div>
-        <i class="sel-h" style="left:-4px;top:-4px"></i><i class="sel-h" style="right:-4px;top:-4px"></i><i class="sel-h" style="left:-4px;bottom:-4px"></i><i class="sel-h" style="right:-4px;bottom:-4px"></i>
-        <span class="frame-size" aria-hidden="true"></span>
+    <button type="button" data-project="${i}" class="group block w-full overflow-hidden rounded-xl border border-line text-left transition hover:border-accent focus-visible:border-accent" style="background:color-mix(in srgb,var(--fg) 5%,var(--bg))" aria-haspopup="dialog">
+      <div class="relative aspect-[16/9] overflow-hidden" style="background:color-mix(in srgb,var(--fg) 9%,var(--bg))">${thumb}${figmaUrl(p.figma) ? '<span class="absolute left-3 top-3 rounded-md bg-fg px-2.5 py-1 text-xs font-medium text-bg">Live Figma file</span>' : ""}</div>
+      <div class="flex items-center gap-3 px-4 py-3.5">
+        <span aria-hidden="true" class="grid h-6 w-6 shrink-0 place-items-center rounded-md text-white" style="background:${FILE_ICON[p.category] || "rgb(var(--accent-rgb))"}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h16M4 15h16M9 4v16M15 4v16"/></svg></span>
+        <span class="min-w-0"><span class="block truncate text-sm font-semibold">${esc(p.title)}</span><span class="mt-0.5 flex items-center gap-1.5 truncate text-xs text-mute"><i aria-hidden="true" class="inline-block h-1.5 w-1.5 shrink-0 rounded-full" style="background:${st[1]}"></i>${esc(p.category)} · ${st[0]}</span></span>
       </div>
-      <div class="mt-5 flex items-baseline justify-between gap-4 border-b border-line pb-4">
-        <h3 class="text-xl font-medium tracking-tight md:text-2xl">${esc(p.title)}</h3>
-        <span class="shrink-0 text-sm text-mute">${esc(p.year)}</span>
-      </div>
-      <p class="mt-3 max-w-md text-mute">${esc(p.summary)}</p>
     </button>
   </li>`;
 }
@@ -598,8 +774,8 @@ function experienceHistory() {
       <span aria-hidden="true" class="ex-dot${i === 0 ? " cur" : ""}"></span>
       <div class="md:col-span-3">
         <p class="text-lg"><time>${esc(e.period)}</time></p>
-        <p class="mt-2 flex flex-wrap items-center gap-2 text-xs">
-          ${i === 0 ? '<span class="rounded bg-accent px-2 py-0.5 font-medium text-onaccent">Current version</span>' : `<span class="rounded border border-line px-2 py-0.5 text-mute">Version ${n - i}</span>`}
+        <p class="${i === 0 ? "mt-9" : "mt-2"} flex flex-wrap items-center gap-2 text-xs">
+          ${i === 0 ? selBox("Badge / Current", '<span class="rounded bg-accent px-2 py-0.5 font-medium text-onaccent">Current version</span>', "!p-1") : `<span class="rounded border border-line px-2 py-0.5 text-mute">Version ${n - i}</span>`}
         </p>
         <p class="mt-3 flex items-center gap-2 text-xs text-mute"><span aria-hidden="true" class="grid h-5 w-5 place-items-center rounded-full bg-accent text-[10px] font-medium text-onaccent">${esc(who.slice(0, 1) || "•")}</span>${esc(who)}</p>
       </div>
@@ -630,15 +806,14 @@ const builders = { about, work, skills, services, experience };
    ========================================================================== */
 function renderChrome() {
   const { site, socials } = CONFIG;
-  $("#brand").innerHTML = `<span class="mr-2 text-accent" aria-hidden="true">#</span>${esc(site.brand)}`;
-  $("#nav-desktop").innerHTML = enabled.map(s => `<li><a data-nav="${s.id}" href="#${s.id}" class="tool block">${esc(s.label)}</a></li>`).join("");
-  $("#nav-mobile").innerHTML = enabled.map(s => `<li class="border-b border-line"><a data-nav="${s.id}" href="#${s.id}" class="block py-4">${esc(s.label)}</a></li>`).join("");
   renderFooter();
 }
 
 const ICONS = {
   google: '<path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><path d="M22 6l-10 7L2 6"/>',
-  tiktok: '<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>',
+  gmail: '<path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><path d="M22 6l-10 7L2 6"/>',
+  discord: '<path d="M7.5 6.2C9 5.5 10.4 5.1 12 5.1s3 .4 4.5 1.1c1.8 2.5 2.8 5.3 3 8.8-1.3 1-2.7 1.7-4.2 2.1l-1-1.7M7.5 6.2C5.7 8.7 4.7 11.5 4.5 15c1.3 1 2.7 1.7 4.2 2.1l1-1.7M8.5 15.8c2.2.6 4.8.6 7 0"/><circle cx="9.3" cy="11.3" r="1.1"/><circle cx="14.7" cy="11.3" r="1.1"/>',
+  tiktok: '<path d="M21 7.917v4.034a9.948 9.948 0 0 1-5-1.951v4.5a6.5 6.5 0 1 1-8-6.326v4.326a2.5 2.5 0 1 0 4 2v-11.5h4.083a6.005 6.005 0 0 0 4.917 4.917z"/>',
   figma: '<path d="M5 5.5A3.5 3.5 0 0 1 8.5 2H12v7H8.5A3.5 3.5 0 0 1 5 5.5z"/><path d="M12 2h3.5a3.5 3.5 0 1 1 0 7H12V2z"/><path d="M12 12.5a3.5 3.5 0 1 1 7 0 3.5 3.5 0 1 1-7 0z"/><path d="M5 19.5A3.5 3.5 0 0 1 8.5 16H12v3.5a3.5 3.5 0 1 1-7 0z"/><path d="M5 12.5A3.5 3.5 0 0 1 8.5 9H12v7H8.5A3.5 3.5 0 0 1 5 12.5z"/>',
   github: '<path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>',
   linkedin: '<path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>',
@@ -674,7 +849,7 @@ function renderFooter() {
       <div class="sm:col-span-2 lg:col-span-1">
         <p class="text-3xl font-bold tracking-tight">${esc(site.brand)}</p>
         ${f.tagline ? `<p class="mt-3 max-w-xs text-mute">${esc(f.tagline)}</p>` : ""}
-        ${f.cta?.label && channels.length ? `<button type="button" data-contact aria-haspopup="dialog" class="${btnPrimary} mt-8 !px-8 !py-4 text-lg">${esc(f.cta.label)}</button>` : ""}
+        ${f.cta?.label && channels.length ? `<div class="mt-10"><span class="sel !p-1.5"><span class="sel-tag">Button / Primary</span><button type="button" data-contact aria-haspopup="dialog" class="${btnPrimary} !px-8 !py-4 text-lg">${esc(f.cta.label)}</button>${SEL_H}</span></div>` : ""}
         ${soc.length ? `<h3 class="mt-8 text-lg font-medium">${esc(f.socialsTitle)}</h3>
         <ul class="mt-4 flex flex-wrap gap-3">${soc.map(s => `<li><a href="${esc(s.url)}" target="_blank" rel="noopener noreferrer" aria-label="${esc(s.label)} (opens in a new tab)" class="grid h-12 w-12 place-items-center rounded-full border border-line transition hover:bg-accent hover:text-onaccent hover:border-transparent">${socialIcon(s.label)}</a></li>`).join("")}</ul>` : ""}
       </div>
@@ -695,18 +870,12 @@ function renderFooter() {
 }
 
 function initMenu() {
-  const toggle = $("#menu-toggle"), menu = $("#mobile-menu");
-  const set = open => { menu.hidden = !open; toggle.setAttribute("aria-expanded", open); toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu"); };
-  toggle.addEventListener("click", () => set(menu.hidden));
-  document.addEventListener("keydown", e => { if (e.key === "Escape" && !menu.hidden) { set(false); toggle.focus(); } });
-  matchMedia("(min-width:768px)").addEventListener("change", e => e.matches && set(false));
   document.addEventListener("click", e => {
     const a = e.target.closest('a[href^="#"]');
     if (!a) return;
     const target = a.getAttribute("href") === "#" ? null : $(a.getAttribute("href"));
     if (!target) return;
     e.preventDefault();
-    set(false);
     target.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
     history.replaceState(null, "", a.getAttribute("href"));
     target.setAttribute("tabindex", "-1");
@@ -739,15 +908,227 @@ function initScrollSpy() {
 }
 
 function initReveal() {
+  // A multiplayer cursor "drags" each block into place: springy landing, dashed outline, name tag that fades.
+  if (reduceMotion || !("IntersectionObserver" in window)) return;
+  const who = [[CONFIG.site.brand, "rgb(var(--accent-rgb))"], ["Client", "#d6336c"], ["Dev", "#0b7285"]];
   const els = $$("[data-reveal]");
-  els.forEach(e => e.classList.add("reveal"));
-  if (reduceMotion || !("IntersectionObserver" in window)) return els.forEach(e => e.classList.add("in"));
+  // Each section gets its own entrance. Variants cycle inside a section so repeated items (rows, cards) alternate too.
+  // Names map to the .fx[data-fx="..."] rules in index.html. Tweak or reorder freely.
+  const FX = {
+    about:      ["drag", "drag-r"],     // dragged in from the left, then the right
+    work:       ["zoom", "rise"],       // frames scale into place / float up
+    skills:     ["drop", "pop"],        // dropped from above with a bounce / popped in
+    services:   ["wipe", "wipe-r"],     // rows wipe open, alternating direction
+    experience: ["focus", "slide-r"]    // blur-to-sharp / slide from the right
+  };
+  const seen = {};
+  els.forEach((e, i) => {
+    const [n, c] = who[i % who.length];
+    const sec = e.closest("section")?.id || "";
+    const list = FX[sec] || FX.about;
+    const k = seen[sec] = (seen[sec] ?? -1) + 1;
+    e.classList.add("fx"); e.dataset.cur = n; e.dataset.fx = list[k % list.length];
+    e.style.setProperty("--cc", c); e.style.setProperty("--fd", (k % 3) * 90 + "ms");
+  });
   const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { threshold: 0.12 });
   els.forEach(e => io.observe(e));
+
+  // Canvas: frames get placed one by one, each flashing its selection box, like designs landing on a Figma page.
+  const cv = $("#canvas");
+  if (cv) {
+    $$(".cf", cv).forEach((f, i) => f.style.setProperty("--cd", Math.min(i * 50, 1100) + "ms"));
+    const open = () => {
+      cv.classList.add("cv-wait");
+      $(".cv-prog i", cv).addEventListener("animationend", () => {
+        cv.classList.add("cv-ready");
+        setTimeout(() => { cv.classList.remove("cv-wait", "cv-ready"); cv.classList.add("cv-in"); }, 350);
+      }, { once: true });
+    };
+    const co = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { open(); co.disconnect(); } }), { threshold: 0.25 });
+    co.observe(cv);
+  }
+}
+
+/* ==========================================================================
+   Design tools: Select / Comment / Inspect modes + a Layers panel for the whole page
+   ========================================================================== */
+function initDesignTools() {
+  const store = { get(k, d) { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch { return d; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} } };
+  const svg = d => `<svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+  const TIP = { move: ["Browse", "V", "Use the site normally"], select: ["Select", "S", "Hover to see what things are, click to select"], comment: ["Comment", "C", "Click anywhere to leave a note"], inspect: ["Inspect", "I", "Click an element to see its size, spacing and CSS"], layers: ["Layers", "L", "Jump between sections"] };
+  const tools = [["move", "Browse (V)", '<path d="M4 3l16 8-7 2-3 7z"/>'], ["select", "Select (S)", '<rect x="4" y="4" width="16" height="16" stroke-dasharray="3 3"/>'], ["comment", "Comment (C)", '<path d="M4 4h16v12h-7l-5 4v-4H4z"/>'], ["inspect", "Inspect (I)", '<path d="M8 8l-4 4 4 4M16 8l4 4-4 4M14 5l-4 14"/>'], ["layers", "Layers (L)", '<path d="M12 3l9 5-9 5-9-5zM3 13l9 5 9-5"/>']];
+  document.body.insertAdjacentHTML("beforeend", `
+  <div data-dt id="dt-dock" role="toolbar" aria-label="Design tools">${tools.map(([k, l, d]) => `<button type="button" class="tool" data-dtool="${k}" aria-pressed="${k === "move"}" aria-label="${l}" data-tip="${TIP[k][0]} (${TIP[k][1]}): ${TIP[k][2]}">${svg(d)}</button>`).join("")}
+    <span class="mx-1 w-px self-stretch bg-line" aria-hidden="true"></span>
+    <button type="button" id="theme-toggle" class="tool" aria-label="Switch theme" data-tip="Dark mode: switch to the dark theme"><svg class="h-4 w-4 dark:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg><svg class="hidden h-4 w-4 dark:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button></div>
+  <div data-dt id="dt-toast" role="status" hidden></div>
+  <div data-dt id="dt-hl" hidden><span></span></div><div data-dt id="dt-margin" hidden></div><div data-dt id="dt-pad" hidden></div>
+  <div data-dt id="dt-sel" hidden><i></i><i></i><i></i><i></i><span></span></div>
+  <aside data-dt id="dt-insp" class="is-off" aria-label="Inspect"></aside>
+  <aside data-dt id="dt-layers" class="is-off" aria-label="Layers"></aside>
+  <div data-dt id="dt-pins" hidden></div>`);
+  const hl = $("#dt-hl"), selBox = $("#dt-sel"), mBox = $("#dt-margin"), pBox = $("#dt-pad"), insp = $("#dt-insp"), pins = $("#dt-pins"), layers = $("#dt-layers");
+  let mode = "move", selected = null, openId = null, raf = 0;
+  const ignore = t => !(t instanceof Element) || t.closest("[data-dt],#canvas,dialog,.fcm");
+  const place = (el, r, tag) => { el.style.cssText = `left:${r.left + scrollX}px;top:${r.top + scrollY}px;width:${r.width}px;height:${r.height}px`; if (tag != null) el.lastElementChild.textContent = tag; el.classList.toggle("in", el === hl ? r.top < 26 : r.bottom > innerHeight - 30); el.hidden = false; };
+  const size = r => `${Math.round(r.width)} × ${Math.round(r.height)}`;
+  const NAMES = { h1: "Heading 1", h2: "Heading 2", h3: "Heading 3", h4: "Heading 4", p: "Text", a: "Link", button: "Button", img: "Image", svg: "Icon", li: "List item", ul: "List", ol: "List", nav: "Navigation", header: "Header", footer: "Footer", aside: "Panel", section: "Section", input: "Input", textarea: "Input", form: "Form", figure: "Figure", dl: "Properties", dt: "Label", dd: "Value", span: "Text", div: "Frame", label: "Label", main: "Page", iframe: "Embed" };
+  const describe = el => {
+    const t = el.tagName.toLowerCase(), txt = (el.textContent || "").trim().replace(/\s+/g, " ");
+    const hasText = txt && ["h1", "h2", "h3", "h4", "p", "a", "button", "li", "span", "label", "dt", "dd"].includes(t);
+    return (NAMES[t] || t) + (t === "section" && el.id ? " · " + el.id : "") + (hasText ? ` "${txt.slice(0, 22)}${txt.length > 22 ? "…" : ""}"` : "");
+  };
+  let toastT = 0;
+  const say = k => { const t = $("#dt-toast"); t.textContent = `${TIP[k][0]}: ${TIP[k][2]}`; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => { t.hidden = true; }, 2200); };
+  const pick = t => { if (ignore(t)) return null; for (let n = t; n && n !== document.body && n !== document.documentElement; n = n.parentElement) { const r = n.getBoundingClientRect(); if (getComputedStyle(n).display !== "inline" && r.width >= 20 && r.height >= 12) return n; } return null; };
+
+  /* ---------- selection + inspect ---------- */
+  const px = (cs, p) => ["Top", "Right", "Bottom", "Left"].map(s => Math.max(0, Math.round(parseFloat(cs[p + s]) || 0)));
+  const draw = () => {
+    raf = 0;
+    if (!selected || !selected.isConnected) { selBox.hidden = mBox.hidden = pBox.hidden = true; return; }
+    const r = selected.getBoundingClientRect();
+    place(selBox, r, `${describe(selected)} · ${size(r)}`);
+    if (mode !== "inspect") { mBox.hidden = pBox.hidden = true; return; }
+    const cs = getComputedStyle(selected), m = px(cs, "margin"), p = px(cs, "padding");
+    mBox.style.cssText = `left:${r.left - m[3] + scrollX}px;top:${r.top - m[0] + scrollY}px;width:${r.width + m[1] + m[3]}px;height:${r.height + m[0] + m[2]}px;border-width:${m[0]}px ${m[1]}px ${m[2]}px ${m[3]}px;border-color:rgba(246,166,80,.45)`; mBox.hidden = false;
+    pBox.style.cssText = `left:${r.left + scrollX}px;top:${r.top + scrollY}px;width:${r.width}px;height:${r.height}px;border-width:${p[0]}px ${p[1]}px ${p[2]}px ${p[3]}px;border-color:rgba(70,190,110,.45)`; pBox.hidden = false;
+  };
+  const redraw = () => { raf ||= requestAnimationFrame(draw); };
+  const hex = c => { const m = c.match(/rgba?\(([^)]+)\)/); if (!m) return c; const [r, g, b, al = 1] = m[1].split(/[ ,/]+/).map(Number); if (al === 0) return "transparent"; return al < 1 ? `rgba(${r}, ${g}, ${b}, ${+al.toFixed(2)})` : "#" + [r, g, b].map(v => Math.round(v).toString(16).padStart(2, "0")).join(""); };
+  const own = el => (el.getAttribute("class") || "").split(/\s+/).filter(c => c && !["fx", "in", "reveal"].includes(c));
+  const cleanHtml = el => { const c = el.cloneNode(true); c.querySelectorAll(".fcm").forEach(n => n.remove()); [c, ...c.querySelectorAll("*")].forEach(n => { ["data-reveal", "data-cur", "data-fx", "data-i", "tabindex"].forEach(a => n.removeAttribute(a)); n.classList.remove("fx", "in", "reveal"); if (n.style) { n.style.removeProperty("--cc"); n.style.removeProperty("--fd"); } if (!n.getAttribute("class")) n.removeAttribute("class"); if (n.getAttribute("style") === "") n.removeAttribute("style"); }); const h = c.outerHTML; return h.length > 6000 ? h.slice(0, 6000) + "\n<!-- … trimmed -->" : h; };
+  const fillInspect = () => {
+    if (!selected) { insp.innerHTML = '<p class="text-mute">Click any element to inspect its size, spacing, type, classes and CSS.</p>'; return; }
+    const cs = getComputedStyle(selected), r = selected.getBoundingClientRect(), m = px(cs, "margin").join(" "), p = px(cs, "padding").join(" ");
+    const four = q => ["Top", "Right", "Bottom", "Left"].map(x => (Math.round(parseFloat(cs[q + x])) || 0) + "px").join(" ");
+    const name = selected.tagName.toLowerCase() + (selected.id ? "#" + selected.id : "");
+    const sw = c => `<i class="mr-1.5 inline-block h-3 w-3 rounded-sm border border-line align-middle" style="background:${c}"></i>`;
+    const clear = c => c === "rgba(0, 0, 0, 0)";
+    const bw = four("border").replace(/Width/g, ""), hasBorder = ["Top", "Right", "Bottom", "Left"].some(x => parseFloat(cs["border" + x + "Width"]) > 0 && cs["border" + x + "Style"] !== "none");
+    const zero = v => !v || /^(0px ?)+$/.test(v);
+    const props = [["display", cs.display], ["position", cs.position === "static" ? "" : cs.position], ["width", Math.round(r.width) + "px"], ["height", Math.round(r.height) + "px"], ["margin", zero(four("margin")) ? "" : four("margin")], ["padding", zero(four("padding")) ? "" : four("padding")],
+      ["flex-direction", cs.display.includes("flex") ? cs.flexDirection : ""], ["gap", cs.gap === "normal" ? "" : cs.gap],
+      ["font-family", cs.fontFamily], ["font-size", cs.fontSize], ["font-weight", cs.fontWeight], ["line-height", cs.lineHeight === "normal" ? "" : cs.lineHeight], ["letter-spacing", cs.letterSpacing === "normal" ? "" : cs.letterSpacing], ["text-align", ["start", "left"].includes(cs.textAlign) ? "" : cs.textAlign], ["text-transform", cs.textTransform === "none" ? "" : cs.textTransform],
+      ["color", hex(cs.color)], ["background-color", clear(cs.backgroundColor) ? "" : hex(cs.backgroundColor)], ["background-image", cs.backgroundImage === "none" ? "" : cs.backgroundImage],
+      ["border-width", hasBorder ? four("border").replace(/\s+/g, " ") : ""], ["border-style", hasBorder ? cs.borderTopStyle : ""], ["border-color", hasBorder ? hex(cs.borderTopColor) : ""],
+      ["border-radius", cs.borderRadius === "0px" ? "" : cs.borderRadius], ["box-shadow", cs.boxShadow === "none" ? "" : cs.boxShadow], ["opacity", cs.opacity === "1" ? "" : cs.opacity], ["overflow", cs.overflow === "visible" ? "" : cs.overflow], ["transform", cs.transform === "none" ? "" : cs.transform]].filter(([, v]) => v);
+    const sel = "." + name.replace(/[^\w-]/g, "-");
+    const note = `/* at ${innerWidth}px wide, ${document.documentElement.classList.contains("dark") ? "dark" : "light"} theme */`;
+    insp.dataset.css = `${note}\n${sel} {\n${props.map(([k, v]) => `  ${k}: ${v};`).join("\n")}\n}`;
+    const cl = own(selected);
+    insp.dataset.cls = cl.join(" ");
+    insp.dataset.html = cleanHtml(selected);
+    const row = (k, v) => `<div class="flex justify-between gap-3 border-b border-line py-1.5"><span class="text-mute">${k}</span><span class="truncate text-right">${v}</span></div>`;
+    insp.innerHTML = `<div class="mb-2 flex items-center gap-2"><span class="truncate font-medium">${esc(name)}</span><span class="ml-auto rounded px-1.5 py-0.5 text-[10px] text-white" style="background:#f24e9a">Inspect</span></div>
+      ${row("Size", size(r))}${row("Margin", m)}${row("Padding", p)}${row("Font", `${esc(cs.fontFamily.split(",")[0].replace(/"/g, ""))} ${cs.fontSize}`)}${row("Weight", cs.fontWeight)}${row("Color", sw(cs.color) + esc(hex(cs.color)))}${row("Fill", clear(cs.backgroundColor) ? "None" : sw(cs.backgroundColor) + esc(hex(cs.backgroundColor)))}${row("Radius", cs.borderRadius)}
+      ${cl.length ? `<p class="mb-1.5 mt-3 text-mute">Classes</p><div class="flex flex-wrap gap-1">${cl.map(c => `<span class="dt-chip">${esc(c)}</span>`).join("")}</div>` : ""}
+      <p class="mb-1.5 mt-3 text-mute">CSS</p>
+      <pre class="dt-code">${esc(insp.dataset.css).replace(/^( {2})([\w-]+):/gm, '$1<span class="dt-p">$2</span>:')}</pre>
+      <div class="mt-2 grid grid-cols-3 gap-1.5"><button type="button" data-copy="css" class="tool border border-line text-center text-xs">Copy CSS</button><button type="button" data-copy="cls" class="tool border border-line text-center text-xs">Classes</button><button type="button" data-copy="html" class="tool border border-line text-center text-xs">HTML</button></div>`;
+  };
+  insp.addEventListener("click", async e => {
+    const b = e.target.closest("[data-copy]");
+    if (!b) return;
+    const was = b.textContent;
+    b.textContent = (await copyText(insp.dataset[b.dataset.copy] || "")) ? "Copied" : "Copy failed";
+    setTimeout(() => { b.textContent = was; }, 1400);
+  });
+
+  /* ---------- comments ---------- */
+  let comments = store.get("fz-comments", []);
+  const save = () => store.set("fz-comments", comments);
+  const who = () => store.get("fz-name", "");
+  const ago = t => { const s = (Date.now() - t) / 1000; return s < 60 ? "now" : s < 3600 ? Math.floor(s / 60) + "m" : s < 86400 ? Math.floor(s / 3600) + "h" : Math.floor(s / 86400) + "d"; };
+  const hue = n => { let h = 0; for (const ch of n || "G") h = (h * 31 + ch.charCodeAt(0)) % 360; return h; };
+  const av = n => `<span class="dt-av" style="background:hsl(${hue(n)} 55% 42%)">${esc((n || "G").slice(0, 1).toUpperCase())}</span>`;
+  const ic = d => `<svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+  const renderPins = () => {
+    const open = comments.find(c => c.id === openId);
+    pins.innerHTML = comments.map(c => { const n = c.thread[0]?.n || who(); return `<button type="button" data-pin="${c.id}" class="dt-pin${c.done ? " done" : ""}" style="left:${c.x * 100}%;top:${c.y}px;background:hsl(${hue(n)} 55% 42%)" aria-label="Comment thread, ${c.thread.length} message${c.thread.length === 1 ? "" : "s"}">${esc((n || "G").slice(0, 1).toUpperCase())}</button>`; }).join("") +
+      (open ? `<div class="dt-pop" data-dt style="left:clamp(8px,calc(${open.x * 100}% + 24px),calc(100% - 296px));top:${open.y}px">
+        ${open.thread.length ? `<div class="dt-head"><span class="font-medium">Comment${open.done ? " · Resolved" : ""}</span><span class="ml-auto flex"><button type="button" data-act="done" class="dt-ib" aria-label="${open.done ? "Reopen" : "Resolve"}" title="${open.done ? "Reopen" : "Resolve"}">${ic('<path d="M5 12l5 5 9-10"/>')}</button><button type="button" data-act="del" class="dt-ib" aria-label="Delete thread" title="Delete">${ic('<path d="M5 7h14M9 7V4h6v3M7 7l1 13h8l1-13"/>')}</button><button type="button" data-act="close" class="dt-ib" aria-label="Close" title="Close">${ic('<path d="M6 6l12 12M18 6L6 18"/>')}</button></span></div>
+        <div class="dt-msgs">${open.thread.map(m => `<div class="dt-msg">${av(m.n)}<div class="min-w-0"><p><b>${esc(m.n)}</b> <span class="text-mute">${ago(m.t)}</span></p><p class="whitespace-pre-wrap break-words">${esc(m.text)}</p></div></div>`).join("")}</div>` : ""}
+        ${who() ? "" : '<input data-dt-name placeholder="Your name" maxlength="30" aria-label="Your name">'}
+        <div class="dt-comp">${av(who())}<textarea data-dt-text rows="1" maxlength="400" aria-label="Comment" placeholder="${open.thread.length ? "Reply" : "Add a comment"}"></textarea><button type="button" class="dt-send" data-act="post" aria-label="Send comment" title="Send (Enter)">${ic('<path d="M12 19V5M5 12l7-7 7 7"/>')}</button></div>
+        <p class="dt-note">Only visible to you, saved on this device</p></div>` : "");
+    const msgs = pins.querySelector(".dt-msgs"); if (msgs) msgs.scrollTop = msgs.scrollHeight;
+    pins.querySelector("[data-dt-text]")?.focus({ preventScroll: true });
+  };
+  const closeOpen = () => { if (openId == null) return; comments = comments.filter(c => c.id !== openId || c.thread.length); openId = null; save(); renderPins(); };
+  pins.addEventListener("click", e => {
+    const pin = e.target.closest("[data-pin]"), act = e.target.closest("[data-act]")?.dataset.act, c = comments.find(x => x.id === openId);
+    if (pin) { const id = +pin.dataset.pin; const same = id === openId; closeOpen(); if (!same) { openId = id; renderPins(); } return; }
+    if (!act || !c) return;
+    if (act === "close") return closeOpen();
+    if (act === "post") {
+      const text = pins.querySelector("[data-dt-text]").value.trim(), nm = pins.querySelector("[data-dt-name]")?.value.trim();
+      if (nm) store.set("fz-name", nm);
+      if (!text) return;
+      c.thread.push({ n: who() || "Guest", text, t: Date.now() });
+    } else if (act === "done") c.done = !c.done;
+    else if (act === "del") { comments = comments.filter(x => x !== c); openId = null; }
+    save(); renderPins();
+  });
+  pins.addEventListener("input", e => { const t = e.target.closest("[data-dt-text]"); if (t) { t.style.height = "auto"; t.style.height = t.scrollHeight + "px"; } });
+  pins.addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey && e.target.closest("[data-dt-text],[data-dt-name]")) { e.preventDefault(); pins.querySelector('[data-act="post"]')?.click(); } });
+
+  /* ---------- layers ---------- */
+  const secs = () => [...$$("#main > section[id]").map(s => ({ id: s.id, label: s.id === "home" ? "Hero" : (CONFIG.sections.find(x => x.id === s.id)?.label || s.id), el: s })), ...($("#footer") ? [{ id: "footer", label: "Footer", el: $("#footer") }] : [])];
+  const buildLayers = () => {
+    const frame = '<path d="M7 4v16M17 4v16M4 7h16M4 17h16"/>';
+    layers.innerHTML = `<p class="flex items-center gap-2 px-2 py-1.5 font-medium">${svg('<path d="M6 3h8l4 4v14H6z"/>')}Layers</p>` + secs().map(s => `<button type="button" data-lay="${s.id}" class="dt-lay">${svg(frame)}<span class="truncate">${esc(s.label)}</span></button>`).join("");
+  };
+  const spy = () => { const list = secs(); let cur = list[0]?.id; list.forEach(s => { if (s.el.getBoundingClientRect().top <= innerHeight * 0.4) cur = s.id; }); if (innerHeight + scrollY >= document.documentElement.scrollHeight - 4) cur = list[list.length - 1]?.id; $$("[data-lay]", layers).forEach(b => b.setAttribute("aria-current", b.dataset.lay === cur)); };
+  layers.addEventListener("click", e => { const b = e.target.closest("[data-lay]"); if (!b) return; $("#" + b.dataset.lay)?.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth" }); if (matchMedia("(max-width:1023px)").matches) setLayers(false); });
+  layers.addEventListener("mouseover", e => { const b = e.target.closest("[data-lay]"); if (b) { const el = $("#" + b.dataset.lay); place(hl, el.getBoundingClientRect(), b.textContent); } });
+  layers.addEventListener("mouseleave", () => { hl.hidden = true; });
+  const setLayers = on => { layers.classList.toggle("is-off", !on); $('[data-dtool="layers"]').setAttribute("aria-pressed", on); if (on) spy(); };
+
+  /* ---------- modes ---------- */
+  const setMode = m => {
+    if (m === "layers") { setLayers(layers.classList.contains("is-off")); return say("layers"); }
+    closeOpen(); say(m); mode = m; document.documentElement.dataset.dtmode = m;
+    $$("[data-dtool]").forEach(b => b.getAttribute("data-dtool") !== "layers" && b.setAttribute("aria-pressed", b.dataset.dtool === m));
+    hl.hidden = true; if (m === "move" || m === "comment") selected = null;
+    insp.classList.toggle("is-off", m !== "inspect"); if (m === "inspect") fillInspect();
+    draw();
+  };
+  $("#dt-dock").addEventListener("click", e => { const b = e.target.closest("[data-dtool]"); if (b) setMode(b.dataset.dtool); });
+  let last = null;
+  const hover = t => {
+    if (mode === "move" || (mode === "comment" && openId != null)) { hl.hidden = true; return; }
+    const n = pick(t);
+    hl.classList.toggle("tag", mode === "comment");
+    if (n && n !== selected) { const r = n.getBoundingClientRect(); place(hl, r, `${mode === "comment" ? "Comment on " : ""}${describe(n)}${mode === "comment" ? "" : " · " + size(r)}`); } else hl.hidden = true;
+  };
+  document.addEventListener("pointermove", e => { last = [e.clientX, e.clientY]; hover(e.target); });
+  document.documentElement.addEventListener("pointerleave", () => { hl.hidden = true; });
+  document.addEventListener("click", e => {
+    if (mode === "move" || ignore(e.target)) return;
+    e.preventDefault(); e.stopPropagation();
+    if (mode === "comment") {
+      closeOpen();
+      const c = { id: Date.now(), x: e.pageX / document.documentElement.clientWidth, y: e.pageY, thread: [] };
+      comments.push(c); openId = c.id; hl.hidden = true; renderPins(); return;
+    }
+    selected = pick(e.target); hl.hidden = true; draw(); if (mode === "inspect") fillInspect();
+  }, true);
+  document.addEventListener("pointerdown", e => { if (openId != null && !e.target.closest(".dt-pop,.dt-pin")) closeOpen(); });
+  addEventListener("scroll", () => { redraw(); if (last && mode !== "move" && !matchMedia("(hover:none)").matches && layers.querySelector(":hover") == null) hover(document.elementFromPoint(last[0], last[1])); if (!layers.classList.contains("is-off")) spy(); }, { passive: true });
+  addEventListener("resize", redraw);
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape") { if (mode !== "move" || openId != null) setMode("move"); return; }
+    if (e.ctrlKey || e.metaKey || e.altKey || e.target.closest?.("input,textarea,select,[contenteditable]") || $("#canvas")?.matches(":hover,:focus-within")) return;
+    const m = { v: "move", s: "select", c: "comment", i: "inspect", l: "layers" }[e.key.toLowerCase()];
+    if (m) setMode(m);
+  });
+  pins.hidden = false; renderPins();
+  buildLayers(); if (innerWidth >= 1500) setLayers(true);
 }
 
 function initCanvas(openProject) {
-  const cv = $("#canvas"), world = $("#world"), wrap = $("#canvas-wrap"), grid = $("#project-grid");
+  const cv = $("#canvas"), world = $("#world"), wrap = $("#canvas-wrap"), grid = $("#grid-wrap");
   if (!cv) return;
   const items = CONFIG.projects.items;
   const handles = rs => {
@@ -756,6 +1137,19 @@ function initCanvas(openProject) {
     return (rs ? c.concat(e) : c).map(([k, p]) => `<i class="sel-h"${rs ? ` data-h="${k}"` : ""} style="${p}"></i>`).join("") + '<span class="frame-size" aria-hidden="true"></span>';
   };
   const H = handles(false), HR = handles(true);
+  // Canva-style designs. type:"design", kind: ig | story | slide | thumb | logo | flyer | card | invite, v = colour variant (0-4).
+  const PALS = [["#7c3aed", "#ec4899", "#ffffff", "#fde047"], ["#0ea5e9", "#22d3ee", "#07243a", "#ffffff"], ["#f97316", "#facc15", "#2b1200", "#ffffff"], ["#16a34a", "#bef264", "#052e16", "#ffffff"], ["#111827", "#374151", "#f9fafb", "#f472b6"]];
+  const DESIGNS = {
+    ig: v => { const [a, b, c, d] = PALS[v % 5]; return { n: "Instagram Post", w: 260, h: 260, html: `<div style="position:relative;display:flex;flex-direction:column;justify-content:center;width:100%;height:100%;padding:26px;overflow:hidden;background:linear-gradient(135deg,${a},${b});color:${c};font-family:Georgia,serif"><i style="position:absolute;right:-40px;top:-40px;width:140px;height:140px;border-radius:50%;background:${d}"></i><p style="position:relative;font-size:38px;line-height:1;font-weight:700;font-style:italic">make it<br>pop.</p><p style="position:relative;margin-top:14px;font:600 11px system-ui;letter-spacing:.15em;text-transform:uppercase">@yourhandle</p></div>` }; },
+    story: v => { const [a, b, c, d] = PALS[v % 5]; return { n: "Instagram Story", w: 180, h: 320, html: `<div style="position:relative;display:flex;flex-direction:column;justify-content:space-between;width:100%;height:100%;padding:18px;overflow:hidden;background:${a};color:${c};font-family:system-ui"><i style="position:absolute;left:-30px;bottom:70px;width:170px;height:170px;border-radius:50%;background:${b}"></i><p style="position:relative;font:700 10px system-ui;letter-spacing:.2em">NEW DROP</p><p style="position:relative;font:800 48px/.9 system-ui;letter-spacing:-.04em">SALE<br>50%</p><p style="position:relative;align-self:flex-start;padding:6px 12px;border-radius:99px;background:${d};color:${a};font:700 11px system-ui">Swipe up ↑</p></div>` }; },
+    slide: v => { const [a, b] = PALS[v % 5]; return { n: "Presentation", w: 320, h: 180, html: `<div style="display:flex;width:100%;height:100%;background:#fff;color:#111;font-family:system-ui"><i style="width:8px;background:${a}"></i><div style="display:flex;flex:1;flex-direction:column;padding:18px 20px"><p style="font:700 9px system-ui;letter-spacing:.18em;color:${a}">Q3 ROADMAP</p><p style="margin-top:6px;font:800 24px/1 system-ui;letter-spacing:-.03em">Ship less,<br>ship better.</p><div style="display:flex;align-items:flex-end;gap:6px;height:56px;margin-top:auto">${[30, 44, 38, 56, 50].map(h => `<i style="flex:1;height:${h}px;border-radius:2px;background:${b}"></i>`).join("")}</div></div></div>` }; },
+    thumb: v => { const [a, b, c, d] = PALS[v % 5]; return { n: "YouTube Thumbnail", w: 320, h: 180, html: `<div style="position:relative;width:100%;height:100%;overflow:hidden;background:linear-gradient(120deg,${a},${b});font-family:Impact,'Arial Black',system-ui"><p style="position:absolute;left:16px;top:18px;max-width:200px;color:#fff;font-size:38px;line-height:.95;font-weight:900;text-shadow:3px 3px 0 #000">I BUILT THIS IN 24H</p><i style="position:absolute;right:18px;bottom:16px;display:grid;place-items:center;width:64px;height:64px;border-radius:50%;background:${d};color:${a};font:900 30px system-ui;transform:rotate(-10deg)">?!</i><i style="position:absolute;left:16px;bottom:16px;padding:4px 10px;background:#000;color:#fff;font:700 12px system-ui;letter-spacing:.1em">WATCH NOW</i></div>` }; },
+    logo: v => { const [a, b] = PALS[v % 5]; return { n: "Logo", w: 240, h: 240, html: `<div style="display:grid;grid-template-columns:1fr 1fr;width:100%;height:100%;font-family:system-ui"><div style="display:grid;place-items:center;background:#f5f0e6"><b style="font:800 46px Georgia,serif;color:#111">F.</b></div><div style="display:grid;place-items:center;background:${a}"><b style="display:grid;place-items:center;width:64px;height:64px;border-radius:50%;background:#fff;color:${a};font-size:24px">fj</b></div><div style="display:grid;place-items:center;background:#111"><b style="color:#fff;font-size:15px;letter-spacing:.3em">FUUJIN</b></div><div style="display:grid;place-items:center;background:${b}"><i style="width:54px;height:54px;background:#fff;transform:rotate(45deg)"></i></div></div>` }; },
+    flyer: v => { const [a, b, c, d] = PALS[v % 5]; return { n: "Flyer", w: 226, h: 320, html: `<div style="position:relative;display:flex;flex-direction:column;justify-content:space-between;width:100%;height:100%;padding:20px;overflow:hidden;background:${a};color:${c};font-family:system-ui"><i style="position:absolute;right:-50px;top:70px;width:150px;height:150px;border-radius:50%;background:${b};opacity:.9"></i><p style="position:relative;font:700 10px system-ui;letter-spacing:.2em">OCT 24 · DAVAO</p><p style="position:relative;font:800 46px/.88 system-ui;letter-spacing:-.04em">DESIGN<br>NIGHT</p><div style="position:relative;display:flex;justify-content:space-between;align-items:center;padding-top:10px;border-top:1px solid currentColor;font:600 10px system-ui"><span>Free entry</span><span style="padding:4px 8px;background:${d};color:${a}">RSVP</span></div></div>` }; },
+    card: v => { const [a, b] = PALS[v % 5]; return { n: "Business Card", w: 280, h: 160, html: `<div style="display:flex;width:100%;height:100%;font-family:system-ui"><div style="display:grid;place-items:center;width:42%;background:${a}"><b style="color:#fff;font:800 34px Georgia,serif">F.</b></div><div style="display:flex;flex:1;flex-direction:column;justify-content:center;gap:4px;padding:16px;background:#fff;color:#111"><b style="font-size:15px">Your Name</b><span style="font-size:10px;color:#666">UI/UX Designer</span><i style="width:24px;height:3px;margin:8px 0;background:${b}"></i><span style="font-size:10px">hello@yourmail.com</span></div></div>` }; },
+    invite: v => { const [a, b] = PALS[v % 5]; return { n: "Invitation", w: 240, h: 330, html: `<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;width:100%;height:100%;padding:24px;border:8px solid ${a};background:#fbf6ec;color:#2a2118;font-family:Georgia,serif;text-align:center"><p style="font:600 10px system-ui;letter-spacing:.25em;color:${a}">YOU'RE INVITED</p><p style="font-size:34px;line-height:1;font-style:italic">Launch<br>Party</p><i style="width:40px;height:2px;background:${b}"></i><p style="font:500 11px/1.5 system-ui">Saturday · 7 PM<br>Rooftop, Davao City</p></div>` }; }
+  };
+  const designOf = x => (DESIGNS[x.kind] || DESIGNS.ig)(x.v || 0);
   // Layout: scattered, like frames dropped around a real Figma page. Change SEED for a new shuffle.
   const SEED = 7, COLS = CONFIG.projects.canvasCols || 6, GX = 80, GY = 120, X0 = 120, Y0 = 120, CAP = 120, FIRST_ROWS = 2;
   let sd = SEED;
@@ -780,16 +1174,25 @@ function initCanvas(openProject) {
   const boxes = items.map((_, i) => ({ l: pos[i].x, t: pos[i].y - 24, r: pos[i].x + wd[i], b: pos[i].y + Math.round(wd[i] / ratioOf(items[i])) + CAP }));
   const maxX = Math.max(...boxes.map(f => f.r)), maxY = Math.max(...boxes.map(f => f.b));
   const NOTE_COLORS = ["#ffe066", "#ffd6e7", "#b2f2bb", "#a5d8ff", "#ffd8a8"];
-  const dims = x => x.type === "sticky" ? [x.w || 200, 100] : x.type === "comment" ? [Math.min(380, 70 + String(x.text).length * 8), 46] : x.type === "text" ? [String(x.text).length * 34, 70] : [x.w || 240, x.h || 160];
+  const baseDims = x => x.type === "sticky" ? [x.w || 200, 100] : x.type === "comment" ? [Math.min(380, 70 + String(x.text).length * 8), 46] : x.type === "text" ? [String(x.text).length * 34, 70] : [x.w || 240, x.h || 160];
+  const dims = x => {
+    if (x.type === "design") { const d = designOf(x); return [d.w, d.h + 24]; }
+    if (x.type === "note") return [x.w || 230, 56 + (x.lines || []).length * 24];
+    if (x.type === "thread") return [300, 118 + (x.replies || []).length * 52];
+    if (x.type === "code") return [x.w || 270, 50 + String(x.text).split("\n").length * 19];
+    if (x.type === "status") return [230, 112];
+    if (x.type === "measure") return [x.w || 120, 30];
+    return baseDims(x);
+  };
   const noteBoxes = [];
-  const extras = (CONFIG.projects.extras || []).map(x => {
+  const place = x => {
     const [w, h] = dims(x);
     const o = { ...x };
     if (o.type === "sticky") { o.color = o.color || NOTE_COLORS[Math.floor(rnd() * NOTE_COLORS.length)]; o.rot = o.rot ?? Math.round((rnd() - .5) * 9); }
     if (o.x != null && o.y != null) return o;
     let best = null;
-    for (let k = 0; k < 90; k++) {
-      const nx = Math.round(-280 + rnd() * (maxX + 560 - w)), ny = Math.round(-60 + rnd() * (maxY + 100 - h));
+    for (let k = 0; k < 160; k++) {
+      const nx = Math.round(-200 + rnd() * (maxX + 400 - w)), ny = Math.round(-60 + rnd() * (maxY + 100 - h));
       const hit = (b, pad) => Math.max(0, Math.min(nx + w, b.r + pad) - Math.max(nx, b.l - pad)) * Math.max(0, Math.min(ny + h, b.b + pad) - Math.max(ny, b.t - pad));
       const cost = boxes.reduce((n, b) => n + hit(b, 8), 0) + noteBoxes.reduce((n, b) => n + hit(b, 8) * 4, 0);
       if (!best || cost < best.cost) best = { cost, x: nx, y: ny };
@@ -798,14 +1201,18 @@ function initCanvas(openProject) {
     noteBoxes.push({ l: best.x, t: best.y, r: best.x + w, b: best.y + h });
     o.x = best.x; o.y = best.y;
     return o;
-  });
+  };
+  // Big layers get placed first so they find free space; small ones fill the gaps. Render order stays as written in CONFIG.
+  const raw = CONFIG.projects.extras || [];
+  const extras = new Array(raw.length);
+  raw.map((x, i) => i).sort((a, b) => { const A = dims(raw[a]), B = dims(raw[b]); return B[0] * B[1] - A[0] * A[1]; }).forEach(i => { extras[i] = place(raw[i]); });
   const visual = (p, i) => p.image
     ? `<img src="${esc(p.image)}" alt="" loading="lazy" draggable="false" class="h-full w-full object-cover">`
     : `<div class="grid h-full w-full place-items-end p-5" style="background:linear-gradient(${135 + i * 35}deg,rgb(var(--accent-rgb)) 0%,color-mix(in srgb,rgb(var(--accent-rgb)) ${70 - i * 12}%,var(--fg)) 100%)"><span class="display text-7xl text-onaccent opacity-90">${esc(p.title.slice(0, 1))}</span></div>`;
   const project = (p, i) => {
     const { x, y } = pos[i];
-    return `<div class="cf" data-i="${i}" data-band="${band[i]}" data-category="${esc(p.category)}" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open ${esc(p.title)}" style="left:${x}px;top:${y}px;width:${wd[i]}px">
-      <span class="cf-name">${esc(p.title)}</span>
+    return `<div class="cf" data-i="${i}" data-band="${band[i]}" data-category="${esc(p.category)}" data-st="${stOf(p)}" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open ${esc(p.title)}" style="left:${x}px;top:${y}px;width:${wd[i]}px">
+      <span class="cf-name pn">${esc(p.title)}</span><span class="cf-badge" style="--st:${STATUS[stOf(p)][1]}">${CHECK}<b>${STATUS[stOf(p)][0]}</b></span>
       <div class="cf-body flex flex-col overflow-hidden border border-line bg-bg">
         <div class="ar relative min-h-0 flex-1 overflow-hidden" style="${ratioCss(p)}">${visual(p, i)}${figmaUrl(p.figma) ? '<span class="absolute left-3 top-3 rounded-md bg-fg px-3 py-1 text-xs font-medium text-bg">Live Figma file</span>' : ""}</div>
         <div class="shrink-0 p-4"><h3 class="text-lg font-medium leading-tight tracking-tight">${esc(p.title)}</h3><p class="mt-1 line-clamp-2 text-sm text-mute">${esc(p.summary)}</p></div>
@@ -813,6 +1220,19 @@ function initCanvas(openProject) {
   };
   const extra = x => {
     const st = `left:${x.x}px;top:${x.y}px`;
+    if (x.type === "design") { const d = designOf(x); return `<div class="cf" data-name="${esc(d.n)}" aria-hidden="true" style="${st}"><span class="cf-name">${esc(x.name || "Canva · " + d.n)}</span><div class="cf-body overflow-hidden border border-line shadow-md" style="width:${d.w}px;height:${d.h}px">${d.html}</div>${HR}</div>`; }
+    if (x.type === "note") return `<div class="cf" data-name="${esc(x.title || "Notes")}" aria-hidden="true" style="${st}"><div class="border border-line bg-bg shadow-md" style="width:${x.w || 230}px"><div class="flex items-center gap-2 border-b border-line px-4 py-2.5 text-sm font-medium"><i style="display:block;width:10px;height:10px;border-radius:2px;background:${esc(x.color || "#ffe066")}"></i>${esc(x.title || "Notes")}</div><ul class="space-y-1.5 px-4 py-3 text-[13px] leading-snug">${(x.lines || []).map(l => `<li class="flex gap-2"><span class="text-mute">–</span><span>${esc(l)}</span></li>`).join("")}</ul></div>${H}</div>`;
+    if (x.type === "thread") {
+      const msg = (n, t, c, time) => `<div class="flex items-start gap-2 px-3 pt-3"><span class="grid h-7 w-7 shrink-0 place-items-center rounded-full text-xs font-medium text-white" style="background:${c}">${esc(String(n).slice(0, 1).toUpperCase())}</span><div class="min-w-0 flex-1"><p class="text-[13px]"><b>${esc(n)}</b>${time ? ` <span class="text-mute">${esc(time)}</span>` : ""}</p><p class="mt-0.5 text-[13px] leading-snug">${esc(t)}</p></div></div>`;
+      const col = x.color || "#d6336c";
+      return `<div class="cf" data-name="Comment thread" aria-hidden="true" style="${st}"><div class="flex items-start gap-2"><span class="grid h-8 w-8 shrink-0 place-items-center rounded-full rounded-bl-none text-sm font-medium text-white" style="background:${col}">${esc(String(x.author || "C").slice(0, 1).toUpperCase())}</span><div class="border border-line bg-bg shadow-md" style="width:260px">${msg(x.author || "Comment", x.text, col, x.time)}${(x.replies || []).map(r => msg(r.author, r.text, "#868e96")).join("")}<div class="mt-3 flex items-center justify-between border-t border-line px-3 py-2 text-xs text-mute"><span>Reply…</span><span class="inline-flex items-center gap-1" style="${x.resolved ? "color:#14ae5c" : ""}">${CHECK}${x.resolved ? "Resolved" : "Resolve"}</span></div></div></div>${H}</div>`;
+    }
+    if (x.type === "code") {
+      const hl = l => { const s = esc(l), m = /^(\s+)([a-z-]+):\s(.*)$/.exec(s); return m ? `${m[1]}<span style="color:#79c0ff">${m[2]}</span>: <span style="color:#ffa657">${m[3]}</span>` : /\{$/.test(s) ? `<span style="color:#d2a8ff">${s}</span>` : s; };
+      return `<div class="cf" data-name="CSS snippet" aria-hidden="true" style="${st}"><span class="cf-name">${esc(x.name || "Inspect · CSS")}</span><pre class="overflow-hidden px-4 py-3 text-[12px] shadow-md" style="width:${x.w || 270}px;margin:0;border-radius:8px;background:#14171f;color:#c9d1d9;line-height:19px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace">${String(x.text).split("\n").map(hl).join("\n")}</pre>${H}</div>`;
+    }
+    if (x.type === "status") { const s = STATUS[x.state] || STATUS.ready; return `<div class="cf" data-name="${esc(x.name || "Dev status")}" aria-hidden="true" style="${st}"><div class="border border-line bg-bg p-3 shadow-md" style="width:230px"><p class="text-xs text-mute">${esc(x.name || "Dev status")}</p><p class="mt-1.5 inline-flex items-center gap-1.5 rounded px-2 py-1 text-[13px] font-medium text-white" style="background:${s[1]}">${CHECK}${s[0]}</p><p class="mt-2 text-xs leading-snug text-mute">${esc(x.text || "")}</p></div>${H}</div>`; }
+    if (x.type === "measure") { const w = x.w || 120; return `<div class="cf" aria-hidden="true" style="${st};pointer-events:none"><div style="position:relative;width:${w}px;height:30px;color:#f24e9a"><i style="position:absolute;left:0;top:6px;width:1px;height:18px;background:currentColor"></i><i style="position:absolute;right:0;top:6px;width:1px;height:18px;background:currentColor"></i><i style="position:absolute;left:0;right:0;top:14px;height:1px;background:currentColor"></i><span style="position:absolute;left:50%;top:-2px;transform:translateX(-50%);padding:3px 5px;border-radius:3px;background:currentColor;color:#fff;font-size:11px;line-height:1;white-space:nowrap">${esc(x.text ?? w)}</span></div></div>`; }
     if (x.type === "sticky") return `<div class="cf" aria-hidden="true" style="${st}"><div class="p-4 text-[15px] leading-snug text-[#1a1a1a] shadow-md" style="width:${x.w || 200}px;background:${esc(x.color || "#ffe066")};transform:rotate(${x.rot ?? -2}deg)">${esc(x.text)}</div>${H}</div>`;
     if (x.type === "text") return `<div class="cf" aria-hidden="true" style="${st}"><p class="display whitespace-nowrap text-6xl">${esc(x.text)}</p>${H}</div>`;
     if (x.type === "swatches") return `<div class="cf" aria-hidden="true" style="${st}"><span class="cf-name">${esc(x.name || "Colors")}</span><div class="flex border border-line">${[100, 70, 40, 15].map(n => `<div style="width:56px;height:56px;background:color-mix(in srgb,rgb(var(--accent-rgb)) ${n}%,var(--bg))"></div>`).join("")}</div>${H}</div>`;
@@ -827,19 +1247,20 @@ function initCanvas(openProject) {
   };
   world.innerHTML = items.map(project).join("") + extras.map(extra).join("");
 
-  let tx = 0, ty = 0, sc = 1, tool = "move", space = false, full = false, hover = false, focus = false, drag = null, zTop = 1;
-  const apply = () => { world.style.transform = `translate(${tx}px,${ty}px) scale(${sc})`; $("#zoom-readout").textContent = Math.round(sc * 100) + "%"; world.style.setProperty("--inv", 1 / sc); };
+  let tx = 0, ty = 0, sc = 1, tool = "move", space = false, full = false, hover = false, focus = false, drag = null, zTop = 1, dev = false, touched = false;
+  const apply = () => { world.style.transform = `translate(${tx}px,${ty}px) scale(${sc})`; $("#zoom-readout").textContent = Math.round(sc * 100) + "%"; world.style.setProperty("--inv", 1 / sc); world.style.setProperty("--sc", sc); world.classList.toggle("low", sc < .6); };
   const zoomAt = (f, cx = cv.clientWidth / 2, cy = cv.clientHeight / 2) => {
-    const n = Math.min(2, Math.max(0.25, sc * f));
+    const n = Math.min(2, Math.max(0.05, sc * f));
     tx = cx - (cx - tx) * n / sc; ty = cy - (cy - ty) * n / sc; sc = n; apply();
   };
-  const fit = first => {
+  // Fit = zoom out so every frame and layer on the page is in view. This is also the default view.
+  const fit = () => {
     let x1 = 1e9, y1 = 1e9, x2 = -1e9, y2 = -1e9;
-    $$(first ? '.cf[data-band="0"]' : ".cf[data-i]", world).forEach(f => { x1 = Math.min(x1, f.offsetLeft); y1 = Math.min(y1, f.offsetTop); x2 = Math.max(x2, f.offsetLeft + f.offsetWidth); y2 = Math.max(y2, f.offsetTop + f.offsetHeight); });
+    $$(".cf", world).forEach(f => { x1 = Math.min(x1, f.offsetLeft); y1 = Math.min(y1, f.offsetTop); x2 = Math.max(x2, f.offsetLeft + f.offsetWidth); y2 = Math.max(y2, f.offsetTop + f.offsetHeight); });
     if (!cv.clientWidth || x2 < x1) return;
-    sc = Math.min(1, cv.clientWidth / (x2 - x1 + 160), cv.clientHeight / (y2 - y1 + 200));
+    sc = Math.min(1, (cv.clientWidth - 80) / (x2 - x1), (cv.clientHeight - 120) / (y2 - y1 + 24));
     tx = (cv.clientWidth - (x2 - x1) * sc) / 2 - x1 * sc;
-    ty = (cv.clientHeight - (y2 - y1) * sc) / 2 - y1 * sc;
+    ty = (cv.clientHeight - (y2 - y1) * sc) / 2 - y1 * sc + 24 * sc;
     apply();
   };
   const setTool = t => {
@@ -852,8 +1273,45 @@ function initCanvas(openProject) {
     $$("#view-toggle button").forEach(b => b.setAttribute("aria-pressed", (b.dataset.view === "canvas") === on));
     if (!on) return;
     $$(".cf", world).forEach(sizeLabel);
-    fit(true);
+    fit();
   };
+
+  // Dev mode: outlines frames, dims the finished ones, and shows an inspector for the selected layer.
+  const inspect = f => {
+    const box = $("#dev-body");
+    if (!box) return;
+    if (!f) { box.innerHTML = '<p class="text-mute">Select a frame to see its size, status and CSS.</p>'; box.dataset.css = ""; return; }
+    const p = f.dataset.i != null ? items[f.dataset.i] : null;
+    const name = p ? p.title : (f.dataset.name || "Layer");
+    const w = Math.round(f.offsetWidth), h = Math.round(f.offsetHeight), x = Math.round(f.offsetLeft), y = Math.round(f.offsetTop);
+    const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") || "layer";
+    const css = `.${slug} {\n  width: ${w}px;\n  height: ${h}px;\n  border: 1px solid var(--line);\n  background: var(--bg);\n}`;
+    const st = p ? STATUS[stOf(p)] : null;
+    const row = (k, v) => `<div class="flex items-center justify-between rounded border border-line px-2 py-1.5"><span class="text-mute">${k}</span><span>${v}</span></div>`;
+    box.innerHTML = `
+      <p class="truncate font-medium">${esc(name)}</p>
+      ${st ? `<p class="mt-1.5 inline-flex items-center gap-1.5 rounded px-2 py-1 text-xs font-medium text-white" style="background:${st[1]}">${CHECK}${st[0]}</p>` : ""}
+      <div class="mt-3 grid grid-cols-2 gap-2">${row("W", w)}${row("H", h)}${row("X", x)}${row("Y", y)}</div>
+      <div class="mt-3 flex items-center justify-between"><span class="font-medium">CSS</span><button type="button" data-copy class="text-xs underline">Copy</button></div>
+      <pre class="mt-2 overflow-auto rounded p-3 text-[11px]" style="margin:0;background:#14171f;color:#c9d1d9;line-height:17px;font-family:ui-monospace,Menlo,monospace">${esc(css)}</pre>
+      ${p && p.tags?.length ? `<p class="mt-3 text-mute">Stack</p><p class="mt-1 flex flex-wrap gap-1">${p.tags.map(t => `<span class="rounded border border-line px-1.5 py-0.5 text-xs">${esc(t)}</span>`).join("")}</p>` : ""}
+      ${p && p.image ? `<p class="mt-3 text-mute">Asset</p><p class="mt-1 truncate text-xs">${esc(p.image)}</p>` : ""}
+      ${p && p.repo && safeUrl(p.repo) ? `<a href="${esc(safeUrl(p.repo))}" target="_blank" rel="noopener noreferrer" class="mt-3 inline-block underline">Open repo ↗</a>` : ""}`;
+    box.dataset.css = css;
+  };
+  const devSync = () => { if (dev) inspect($(".cf.on", world)); };
+  const setDev = on => {
+    dev = on;
+    cv.classList.toggle("dev", on);
+    $("[data-dev]", cv).setAttribute("aria-pressed", on);
+    $("#dev-panel").classList.toggle("is-off", !on);
+    if (on) inspect($(".cf.on", world));
+  };
+  $("#dev-panel").addEventListener("click", e => {
+    const b = e.target.closest("[data-copy]");
+    if (!b) return;
+    copyText($("#dev-body").dataset.css || "").then(ok => { b.textContent = ok ? "Copied" : "Copy failed"; setTimeout(() => { b.textContent = "Copy"; }, 1200); });
+  });
 
   let ph = null, anim = null;
   const EASE = "cubic-bezier(.2,.8,.2,1)";
@@ -929,7 +1387,8 @@ function initCanvas(openProject) {
   };
 
   cv.addEventListener("pointerdown", e => {
-    if (e.target.closest(".cv-bar, [data-open]")) return;
+    if (e.target.closest(".cv-bar, #dev-panel, [data-open]")) return;
+    touched = true;
     const f = e.target.closest(".cf");
     $$(".cf.on", world).forEach(x => x.classList.remove("on"));
     cv.setPointerCapture(e.pointerId);
@@ -940,6 +1399,7 @@ function initCanvas(openProject) {
       drag = { f, x: e.clientX, y: e.clientY, l: f.offsetLeft, t: f.offsetTop, w: f.offsetWidth, h: f.offsetHeight, rs: hd ? hd.dataset.h : null, moved: false };
       if (drag.rs) { cv.dataset.rs = drag.rs; cv.style.setProperty("--rs-cur", `var(--c-${CUR[drag.rs]})`); }
     }
+    devSync();
   });
   cv.addEventListener("pointermove", e => {
     if (!drag) return;
@@ -956,6 +1416,7 @@ function initCanvas(openProject) {
     drag = null;
     delete cv.dataset.rs; cv.style.removeProperty("--rs-cur");
     cv.classList.remove("grabbing");
+    devSync();
   };
   cv.addEventListener("pointerup", endDrag);
   cv.addEventListener("pointercancel", endDrag);
@@ -971,6 +1432,7 @@ function initCanvas(openProject) {
   cv.addEventListener("wheel", e => {
     if (!(e.ctrlKey || e.metaKey)) return;
     e.preventDefault();
+    touched = true;
     const r = cv.getBoundingClientRect();
     zoomAt(e.deltaY < 0 ? 1.1 : 1 / 1.1, e.clientX - r.left, e.clientY - r.top);
   }, { passive: false });
@@ -981,9 +1443,11 @@ function initCanvas(openProject) {
   cv.querySelector(".cv-bar").addEventListener("click", e => {
     const b = e.target.closest("button");
     if (!b) return;
+    touched = true;
     if (b.dataset.tool) setTool(b.dataset.tool);
     else if (b.dataset.zoom) zoomAt(b.dataset.zoom > 0 ? 1.2 : 1 / 1.2);
     else if ("fit" in b.dataset) fit();
+    else if ("dev" in b.dataset) setDev(!dev);
     else if ("full" in b.dataset) setFull(!full);
   });
   world.addEventListener("keydown", e => {
@@ -1013,6 +1477,7 @@ function initCanvas(openProject) {
     else if (k === "0") fit();
     else if (k === "escape") $$(".cf.on", world).forEach(x => x.classList.remove("on"));
     else if (k === "f") setFull(!full);
+    else if (k === "d") setDev(!dev);
     else if (k === " " && !e.target.closest("button")) { e.preventDefault(); space = true; cv.classList.add("hand"); }
     else if (k.startsWith("arrow") && e.target.matches?.(".cf[data-i]")) {
       e.preventDefault();
@@ -1026,6 +1491,7 @@ function initCanvas(openProject) {
   document.addEventListener("keyup", e => { if (e.key === " " && space) { space = false; cv.classList.toggle("hand", tool === "hand"); } });
   $("#view-toggle").addEventListener("click", e => { const b = e.target.closest("[data-view]"); if (b) setView(b.dataset.view === "canvas"); });
   setView(matchMedia("(min-width:768px)").matches);
+  document.fonts?.ready.then(() => { if (!touched && !full) fit(); });   // re-fit once fonts settle, unless the visitor already moved the canvas
 }
 
 function initSkills() {
@@ -1121,7 +1587,7 @@ function initProjects() {
             </div>
             <p class="mt-3 text-mute">${esc([p.category, p.year].filter(Boolean).join(", "))}</p>
             <p class="mt-6 text-lg leading-relaxed">${esc(p.description || p.summary)}</p>
-            ${fig ? `<div class="mt-6 aspect-[4/3] w-full overflow-hidden border border-line"><iframe title="${esc(p.title)} in Figma" src="https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(fig)}" loading="lazy" allowfullscreen class="h-full w-full"></iframe></div>` : ""}
+            ${fig ? `<div class="relative mt-6 aspect-[4/3] w-full overflow-hidden border border-line"><div class="fig-load" aria-hidden="true"><svg class="cv-logo h-9 w-9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${ICONS.figma}</svg><div class="cv-prog"><i></i></div><p class="text-xs text-mute">Opening file…</p></div><iframe onload="this.previousElementSibling?.remove()" title="${esc(p.title)} in Figma" src="https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(fig)}" loading="lazy" allowfullscreen class="h-full w-full"></iframe></div>` : ""}
             ${p.tags?.length ? `<ul class="mt-6 flex flex-wrap gap-2">${p.tags.map(t => `<li class="rounded-md border border-line px-3 py-1 text-sm">${esc(t)}</li>`).join("")}</ul>` : ""}
             ${links.length ? `<div class="mt-8 flex flex-wrap gap-3">${links.map(([u, l], i) => `<a href="${esc(u)}" target="_blank" rel="noopener noreferrer" class="${i ? fGhost : fPrimary}">${l}<span class="sr-only"> (opens in a new tab)</span></a>`).join("")}</div>` : ""}
           </div>
@@ -1130,10 +1596,67 @@ function initProjects() {
     modal.showModal();
     document.body.style.overflow = "hidden";
   };
-  grid.addEventListener("click", e => { const b = e.target.closest("[data-project]"); if (b) openProject(b.dataset.project, b); });
+  $("#grid-wrap").addEventListener("click", e => { const b = e.target.closest("[data-project]"); if (b) openProject(b.dataset.project, b); });
   modal.addEventListener("click", e => { if (e.target === modal || e.target.closest("[data-close]")) modal.close(); });
   modal.addEventListener("close", () => { document.body.style.overflow = ""; opener?.focus(); });
   initCanvas(openProject);
+}
+
+/* ==========================================================================
+   Figma-style comment pins (CONFIG.comments)
+   ========================================================================== */
+function initComments() {
+  const C = CONFIG.comments;
+  if (!C || C.enabled === false || !Array.isArray(C.items)) return;
+  const corners = ["tr", "br", "tl", "bl"];
+  const hex = c => /^#[0-9a-f]{3,8}$/i.test(c || "") ? c : "#0b7285";
+  const ini = n => esc(String(n || "?").trim().charAt(0).toUpperCase());
+  const svg = d => `<svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+  const msg = (m, first) => `<div class="fcm-row"><span class="fcm-av" style="--cc:${m.color ? hex(m.color) : "rgb(var(--accent-rgb))"}" aria-hidden="true">${ini(m.author)}</span><div class="fcm-main"><div class="fcm-head"><b>${esc(m.author || "")}</b>${m.time ? `<span>${esc(m.time)}</span>` : ""}${first ? `<button type="button" class="fcm-res" data-fcm-res aria-pressed="false" aria-label="Mark as resolved" title="Resolve">${svg('<path d="M5 12.5l4.5 4.5L19 7.5"/>')}</button>` : ""}</div><p class="fcm-text">${esc(m.text)}</p></div></div>`;
+
+  C.items.forEach((t, i) => {
+    if (!t?.text) return;
+    let host = null;
+    try { host = $(t.at || ""); } catch {}
+    if (!host) return;
+    if (getComputedStyle(host).position === "static") host.style.position = "relative";
+    const replies = [].concat(t.replies || t.reply || []).filter(r => r?.text);
+    const pin = document.createElement("span");
+    pin.className = `fcm ${corners.includes(t.pin) ? t.pin : "tr"}`;
+    pin.style.setProperty("--cc", hex(t.color));
+    pin.style.setProperty("--d", String(i * 0.7));
+    pin.innerHTML = `<button type="button" class="fcm-pin" aria-expanded="false" aria-haspopup="dialog" aria-label="Comment from ${esc(t.author || "someone")}: ${esc(t.text)}">${ini(t.author)}</button>
+      <div class="fcm-pop" role="dialog" aria-label="Comment thread">${msg(t, true)}${replies.map(r => msg(r, false)).join("")}<button type="button" class="fcm-input" data-fcm-reply><span>Reply</span><span class="fcm-send" aria-hidden="true">${svg('<path d="M12 19V5M5 12l7-7 7 7"/>')}</span></button></div>`;
+    host.appendChild(pin);
+  });
+
+  // keep the popover inside the screen
+  const place = f => {
+    const pop = $(".fcm-pop", f);
+    pop.style.setProperty("--sx", "0px");
+    const r = pop.getBoundingClientRect();
+    const dx = r.left < 8 ? 8 - r.left : r.right > innerWidth - 8 ? innerWidth - 8 - r.right : 0;
+    pop.style.setProperty("--sx", dx + "px");
+  };
+  const setOpen = (f, on) => { f.classList.toggle("open", on); $(".fcm-pin", f).setAttribute("aria-expanded", on); if (on) place(f); };
+  const closeAll = except => $$(".fcm.open").forEach(f => { if (f !== except) setOpen(f, false); });
+
+  document.addEventListener("click", e => {
+    const f = e.target.closest?.(".fcm");
+    closeAll(f);
+    if (!f) return;
+    if (e.target.closest(".fcm-pin")) return setOpen(f, !f.classList.contains("open"));
+    const res = e.target.closest("[data-fcm-res]");
+    if (res) {
+      const on = !f.classList.contains("done");
+      f.classList.toggle("done", on); res.setAttribute("aria-pressed", on);
+      if (on) setOpen(f, false);
+      return;
+    }
+    if (e.target.closest("[data-fcm-reply]")) { setOpen(f, false); $("[data-contact]")?.click(); }   // Reply opens the contact window
+  });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") closeAll(); });
+  $$(".fcm").forEach(f => f.addEventListener("mouseenter", () => place(f)));
 }
 
 /* ==========================================================================
@@ -1146,15 +1669,17 @@ function init() {
   $('meta[property="og:title"]').content = site.title;
   $('meta[property="og:description"]').content = site.description;
   applyAccent(applyPalette());
-  initTheme();
   renderChrome();
   $("#main").insertAdjacentHTML("beforeend", hero() + enabled.map(s => builders[s.id]?.() || "").join(""));
   initMenu();
   initProjects();
+  initReveal();
+  initDesignTools();
+  initTheme();
   initSkills();
   initContact();
+  initComments();
   initCursors();
   initScrollSpy();
-  initReveal();
 }
 init();
